@@ -1,0 +1,7 @@
+# Code Owners for Openpay PHP SDK (Nowo fork)
+
+* @HecFranco
+
+/.github/ @HecFranco
+/Openpay/ @HecFranco
+/tests/ @HecFranco

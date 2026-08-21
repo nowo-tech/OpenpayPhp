@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OpenpayPhp demo{% endblock %}
+
+{% block body %}
+  <main style="max-width:40rem;margin:2rem auto;font-family:system-ui,sans-serif">
+    <h1>OpenpayPhp — Session demo</h1>
+    <p>Uses <code>Nowo\Openpay\Session</code> per request (FrankenPHP worker-safe). {% if usingMock %}No keys configured — responses are <strong>mocked</strong>.{% else %}Calling Openpay sandbox/live with your keys.{% endif %}</p>
+    <form method="post" action="{{ path('customers_create') }}">
+      <p>
+        <label>Name<br><input name="name" value="Demo User" required></label>
+      </p>
+      <p>
+        <label>Email<br><input name="email" type="email" value="demo@example.test" required></label>
+      </p>
+      <button type="submit">Create customer</button>
+    </form>
+  </main>
+{% endblock %}
