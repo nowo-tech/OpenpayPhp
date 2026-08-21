@@ -59,4 +59,6 @@ make qa
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+**MIT** — see [LICENSE](LICENSE).
+
+Independent clean-room client for the public Openpay REST API. Not a redistribution of `openpay/sdk`. “Openpay” is a trademark of its owners.
