@@ -21,7 +21,9 @@ final class Session
 
     /**
      * @template T
+     *
      * @param callable(Client): T $callback
+     *
      * @return T
      */
     public function run(callable $callback): mixed

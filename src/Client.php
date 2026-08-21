@@ -46,6 +46,7 @@ final class Client
 
     /**
      * @param array<string, mixed>|null $payload
+     *
      * @return array<string, mixed>
      */
     public function request(string $method, string $relativePath, ?array $payload = null): array
@@ -70,23 +71,19 @@ final class Client
 
         $response = $this->http->request($method, $url, $body, $headers);
         if ($response->statusCode >= 400) {
-            throw new OpenpayException(
-                sprintf('Openpay API error HTTP %d: %s', $response->statusCode, $response->body),
-                $response->statusCode
-            );
+            throw new OpenpayException(\sprintf('Openpay API error HTTP %d: %s', $response->statusCode, $response->body), $response->statusCode);
         }
 
         if ('' === $response->body) {
             return [];
         }
 
-        /** @var mixed $decoded */
         $decoded = json_decode($response->body, true);
         if (!\is_array($decoded)) {
             throw new OpenpayException('Openpay API returned invalid JSON.');
         }
 
-        /** @var array<string, mixed> $decoded */
+        /* @var array<string, mixed> $decoded */
         return $decoded;
     }
 }

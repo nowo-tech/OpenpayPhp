@@ -20,6 +20,7 @@ final class ResourceApi
 
     /**
      * @param array<string, mixed> $payload
+     *
      * @return array<string, mixed>
      */
     public function create(array $payload): array
@@ -35,12 +36,13 @@ final class ResourceApi
 
     /**
      * @param array<string, scalar|null> $query
+     *
      * @return array<string, mixed>
      */
     public function getList(array $query = []): array
     {
         $path = $this->resourcePath;
-        if ($query !== []) {
+        if ([] !== $query) {
             $path .= '?'.http_build_query($query);
         }
 
@@ -49,6 +51,7 @@ final class ResourceApi
 
     /**
      * @param array<string, mixed> $payload
+     *
      * @return array<string, mixed>
      */
     public function update(string $id, array $payload): array
@@ -64,6 +67,7 @@ final class ResourceApi
 
     /**
      * @param array<string, mixed> $payload
+     *
      * @return array<string, mixed>
      */
     public function refund(string $chargeId, array $payload = []): array
