@@ -1,5 +1,7 @@
 # Code inventory — OpenpayPhp 1.0.0
 
+**Last audited:** 2026-08-24. **Coverage summary:** PHP 100% statements in root `coverage.xml`.
+
 | Unit | Path |
 |------|------|
 | Client | src/Client.php |

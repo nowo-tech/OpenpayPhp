@@ -19,7 +19,11 @@ Independent implementation from public docs — **not** a redistribution of `ope
 - [Security](docs/SECURITY.md)
 - [Coverage](docs/COVERAGE.md)
 - [FrankenPHP demo](docs/DEMO-FRANKENPHP.md)
+- [Spec-driven development](docs/SPEC-DRIVEN-DEVELOPMENT.md)
+- [Spec Kit](docs/SPEC-KIT.md)
+- [GitHub CI](docs/GITHUB_CI.md)
 - [Changelog](docs/CHANGELOG.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Quick start
 
