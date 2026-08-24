@@ -1,3 +1,25 @@
+# Upgrading
+
+## Table of contents
+
+- [From 1.0.0 to 1.0.1](#from-100-to-101)
+
+## From 1.0.0 to 1.0.1
+
+No breaking changes. **No application upgrade steps.**
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
+## From 1.0.0 to 1.0.1
+
+No breaking changes. **No application upgrade steps.**
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
 # Upgrading to 1.0.0
 
 1.0.0 is a **clean-room rewrite**. There is no drop-in BC with `Openpay\` / `openpay/sdk`.
