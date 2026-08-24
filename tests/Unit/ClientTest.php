@@ -16,6 +16,30 @@ use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
 {
+    public function testCustomerCardsNested(): void
+    {
+        $urls = [];
+        $http = new class($urls) implements HttpClient {
+            /** @param list<string> $urls */
+            public function __construct(private array &$urls)
+            {
+            }
+
+            public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
+            {
+                $this->urls[] = $method.' '.$url;
+
+                return new HttpResponse(200, '{"id":"card1"}');
+            }
+        };
+        $client = new Client(new Credentials('mid', 'sk'), $http);
+        $card = $client->customerCards('cus_1')->get('card1');
+        self::assertSame('card1', $card['id']);
+        self::assertTrue(
+            (bool) array_filter($urls, static fn (string $u): bool => str_contains($u, '/customers/cus_1/cards/card1'))
+        );
+    }
+
     public function testCreatesChargeViaFakeHttp(): void
     {
         $http = new class implements HttpClient {
