@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering contributing to the Nowo Openpay PHP SDK fork.
+Thank you for considering contributing to the Nowo Openpay PHP SDK.
 
 ## Code of Conduct
 
@@ -33,7 +33,7 @@ fails on historical trailers, run `make strip-cursor-coauthor-from-history`
 ## Pull requests
 
 1. Fork the repository.
-2. Create a feature branch from `master`.
+2. Create a feature branch from `main`.
 3. Run `make release-check` (or at least `composer test` and `composer cs-check`).
 4. Open a PR using the template.
 

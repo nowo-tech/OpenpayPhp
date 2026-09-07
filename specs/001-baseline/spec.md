@@ -1,6 +1,6 @@
 # Feature Specification: Openpay PHP SDK baseline
 
-**Status**: Shipped (`1.0.0`)
+**Status**: Shipped (`1.0.2`)
 **Input**: Clean-room Nowo Openpay REST client (`nowo-tech/openpay-php`).
 
 ## Summary

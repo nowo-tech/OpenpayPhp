@@ -1,4 +1,4 @@
-# Code inventory — OpenpayPhp 1.0.0
+# Code inventory — OpenpayPhp 1.0.2
 
 **Last audited:** 2026-08-24. **Coverage summary:** PHP 100% statements in root `coverage.xml`.
 
