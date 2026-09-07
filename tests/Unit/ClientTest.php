@@ -130,7 +130,7 @@ final class ClientTest extends TestCase
         self::assertTrue(
             (bool) array_filter($urls, static fn (string $u): bool => str_contains($u, '/charges/tr1/refund'))
         );
-        self::assertSame('1.0.0', Version::VERSION);
+        self::assertSame('1.0.2', Version::VERSION);
     }
 
     public function testEmptyCredentialsRejected(): void

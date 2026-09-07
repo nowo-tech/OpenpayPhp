@@ -4,11 +4,12 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.x     | :white_check_mark: |
+| 1.0.x   | :white_check_mark: |
+| 3.x fork (`Openpay\\`) | :x: Not published from this VCS; see [CHANGELOG](../docs/CHANGELOG.md) |
 
 ## Reporting a Vulnerability
 
-We take the security of Openpay PHP SDK (Nowo fork) seriously. If you believe you have found a security vulnerability, please report it to us as described below.
+We take the security of the Nowo Openpay PHP SDK seriously. If you believe you have found a security vulnerability, please report it to us as described below.
 
 ### How to Report
 
