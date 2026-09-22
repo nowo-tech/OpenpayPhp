@@ -130,7 +130,69 @@ final class ClientTest extends TestCase
         self::assertTrue(
             (bool) array_filter($urls, static fn (string $u): bool => str_contains($u, '/charges/tr1/refund'))
         );
-        self::assertSame('1.0.2', Version::VERSION);
+        self::assertSame('1.1.0', Version::VERSION);
+    }
+
+    public function testWebhooksCreateListGetDelete(): void
+    {
+        $urls = [];
+        $bodies = [];
+        $http = new class($urls, $bodies) implements HttpClient {
+            /**
+             * @param list<string>         $urls
+             * @param list<string|null>    $bodies
+             */
+            public function __construct(private array &$urls, private array &$bodies)
+            {
+            }
+
+            public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
+            {
+                $this->urls[] = $method.' '.$url;
+                $this->bodies[] = $jsonBody;
+
+                if ('POST' === $method) {
+                    return new HttpResponse(200, '{"id":"wh_1","status":"verified"}');
+                }
+                if (str_contains($url, '/webhooks/wh_1') && 'GET' === $method) {
+                    return new HttpResponse(200, '{"id":"wh_1","status":"verified"}');
+                }
+                if ('DELETE' === $method) {
+                    return new HttpResponse(204, '');
+                }
+
+                return new HttpResponse(200, '[{"id":"wh_1","status":"verified"}]');
+            }
+        };
+
+        $client = new Client(new Credentials('mid', 'sk'), $http);
+        $created = $client->webhooks->add([
+            'url' => 'https://example.test/hook',
+            'event_types' => ['charge.succeeded'],
+        ]);
+        self::assertSame('wh_1', $created['id']);
+        self::assertSame('verified', $created['status']);
+
+        $viaCreate = $client->webhooks->create(['url' => 'https://example.test/hook2']);
+        self::assertSame('wh_1', $viaCreate['id']);
+
+        $list = $client->webhooks->getList();
+        self::assertIsArray($list);
+        self::assertSame('wh_1', $list[0]['id']);
+
+        $one = $client->webhooks->get('wh_1');
+        self::assertSame('wh_1', $one['id']);
+
+        self::assertSame([], $client->webhooks->delete('wh_1'));
+
+        self::assertTrue(
+            (bool) array_filter($urls, static fn (string $u): bool => str_starts_with($u, 'POST ') && str_contains($u, '/webhooks'))
+        );
+        self::assertTrue(
+            (bool) array_filter($urls, static fn (string $u): bool => str_starts_with($u, 'DELETE ') && str_contains($u, '/webhooks/wh_1'))
+        );
+        self::assertNotNull($bodies[0]);
+        self::assertStringContainsString('example.test/hook', (string) $bodies[0]);
     }
 
     public function testEmptyCredentialsRejected(): void

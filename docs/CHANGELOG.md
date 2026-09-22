@@ -11,14 +11,15 @@ The Composer package is [`nowo-tech/openpay-php`](https://packagist.org/packages
 
 | Line | API | Packagist today |
 | --- | --- | --- |
-| **1.0.x** (`main`) | MIT clean-room `Nowo\Openpay\` | Installable (`v1.0.0`–`v1.0.2`) |
+| **1.x** (`main`) | MIT clean-room `Nowo\Openpay\` | Installable (`v1.0.0`–`v1.1.0`) |
 | **3.x** (former `master` fork) | Apache-2.0 drop-in `Openpay\` (`replace` `openpay/sdk` 3.1.1) | Tags were dropped from this VCS; Composer **cannot** resolve `3.1.1.1` / `3.2.0` / `v3.2.1` |
 
-Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` (for example core-nowo) need the **3.x fork**, not `^1.0`. Until those tags are restored on a Packagist-connected ref, use the archived tree [`nowo-tech/OpenpayPhp-fork-archive`](https://github.com/nowo-tech/OpenpayPhp-fork-archive) branch `master` (commit `bb01997`, release **3.2.1**).
+Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` need either the **3.x fork** or a migration to `Client`/`Session` (1.1+ includes **webhooks**). Until 3.x tags are restored on a Packagist-connected ref, use the archived tree [`nowo-tech/OpenpayPhp-fork-archive`](https://github.com/nowo-tech/OpenpayPhp-fork-archive) branch `master` (commit `bb01997`, release **3.2.1**).
 
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.0] - 2026-09-22](#110---2026-09-22)
 - [[1.0.2] - 2026-09-07](#102---2026-09-07)
 - [[1.0.1] - 2026-08-24](#101---2026-08-24)
 - [[1.0.0] - 2026-08-21](#100---2026-08-21)
@@ -27,6 +28,20 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` (f
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21) (fork, not on Packagist)
 
 ## [Unreleased]
+
+## [1.1.0] - 2026-09-22
+
+### Added
+
+- **`Client::$webhooks`** — merchant webhook CRUD via `ResourceApi` (`create`/`add`, `get`, `getList`, `delete`, `update`).
+- **`ResourceApi::add()`** — alias of `create()` for legacy Openpay SDK naming.
+
+### Notes
+
+- Responses remain decoded **arrays** (not objects). Apps migrating from 3.x must map `$res->id` → `$res['id']`, etc.
+- core-nowo / similar: after adapting the payment factory, prefer `^1.1` over the fork archive.
+
+[1.1.0]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.1.0
 
 ## [1.0.2] - 2026-09-07
 
