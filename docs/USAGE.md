@@ -18,3 +18,31 @@ $charge = $session->run(static function (Client $client) {
 ```
 
 Nested customer resources: `$client->customerCharges($id)`, `$client->customerCards($id)`.
+
+## Webhooks
+
+```php
+$webhook = $session->run(static function (Client $client) {
+    return $client->webhooks->add([
+        'url' => 'https://merchant.example/openpay/hook',
+        'user' => 'hook-user',
+        'password' => 'hook-pass',
+        'event_types' => [
+            'verification',
+            'charge.succeeded',
+            'charge.failed',
+            'charge.cancelled',
+            'charge.created',
+            'charge.refunded',
+        ],
+    ]);
+});
+// $webhook['id'], $webhook['status'] (e.g. verified)
+
+$list = $session->client()->webhooks->getList();
+$session->client()->webhooks->delete($webhook['id']);
+```
+
+`ResourceApi::add()` is an alias of `create()` (legacy Openpay SDK naming).
+
+All resource methods return **arrays** (decoded JSON), not SDK objects.

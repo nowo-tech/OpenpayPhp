@@ -2,11 +2,23 @@
 
 ## Table of contents
 
+- [From 1.0.2 to 1.1.0](#from-102-to-110)
 - [From 1.0.1 to 1.0.2](#from-101-to-102)
 - [From 1.0.0 to 1.0.1](#from-100-to-101)
+- [From 3.x fork to 1.1.0](#from-3x-fork-to-110)
 - [From 3.x fork to 1.0.0](#from-3x-fork-to-100)
 - [3.2.0 → 3.2.1 (fork)](#320--321-fork)
 - [3.1.1.1 → 3.2.0 (fork)](#3111--320-fork)
+
+## From 1.0.2 to 1.1.0
+
+Additive only. **No breaking changes** for existing `charges` / `customers` / `cards` / `tokens` callers.
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
+New: `$client->webhooks` and `ResourceApi::add()` (= `create()`).
 
 ## From 1.0.1 to 1.0.2
 
@@ -22,6 +34,27 @@ No breaking changes. **No application upgrade steps.**
 
 ```bash
 composer update nowo-tech/openpay-php
+```
+
+## From 3.x fork to 1.1.0
+
+Prefer **1.1+** over 1.0 when migrating: webhooks are available on `Client`.
+
+Still **not** a drop-in for `Openpay\Data\*` — rewrite credentials to `Credentials` + `Session::run()`, and use array responses:
+
+| Old (3.x fork) | New (1.1.x) |
+| --- | --- |
+| `$openpay->webhooks->add($payload)` → object | `$client->webhooks->add($payload)` → `array` (`id`, `status`, …) |
+| `$openpay->charges->create($payload)` → object | `$client->charges->create($payload)` → `array` |
+| `$res->serializableData['payment_method']->url` | `$res['payment_method']['url']` (shape from Openpay JSON) |
+| `$webhook->delete()` | `$client->webhooks->delete($id)` |
+
+```json
+{
+  "require": {
+    "nowo-tech/openpay-php": "^1.1"
+  }
+}
 ```
 
 ## From 3.x fork to 1.0.0

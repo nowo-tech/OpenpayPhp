@@ -2,7 +2,7 @@
 
 This checklist helps maintainers prepare and publish a release safely.
 
-> Current release: **1.0.2** (tag `v1.0.2`), MIT clean-room `Nowo\Openpay\`.
+> Current release: **1.1.0** (tag `v1.1.0`), MIT clean-room `Nowo\Openpay\`.
 > Tags must match `v*` so `.github/workflows/release.yml` creates the GitHub Release.
 
 The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags are not on this VCS; Packagist cannot install them. Do not retag 3.x onto `main` (wrong API). Restore them only from fork commits (`master` / `OpenpayPhp-fork-archive`).

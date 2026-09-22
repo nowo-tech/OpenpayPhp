@@ -11,6 +11,8 @@ use Nowo\Openpay\Http\HttpClient;
 
 /**
  * Openpay API client (no process-wide static credentials).
+ *
+ * Merchant-root resources: charges, customers, cards, tokens, webhooks.
  */
 final class Client
 {
@@ -18,6 +20,7 @@ final class Client
     public readonly ResourceApi $customers;
     public readonly ResourceApi $cards;
     public readonly ResourceApi $tokens;
+    public readonly ResourceApi $webhooks;
 
     public function __construct(
         private readonly Credentials $credentials,
@@ -27,6 +30,7 @@ final class Client
         $this->customers = new ResourceApi($this, 'customers');
         $this->cards = new ResourceApi($this, 'cards');
         $this->tokens = new ResourceApi($this, 'tokens');
+        $this->webhooks = new ResourceApi($this, 'webhooks');
     }
 
     public function credentials(): Credentials

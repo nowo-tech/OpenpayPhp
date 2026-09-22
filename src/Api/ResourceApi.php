@@ -28,6 +28,18 @@ final class ResourceApi
         return $this->client->request('POST', $this->resourcePath, $payload);
     }
 
+    /**
+     * Alias of {@see create()} (matches legacy Openpay SDK `->add()` naming).
+     *
+     * @param array<string, mixed> $payload
+     *
+     * @return array<string, mixed>
+     */
+    public function add(array $payload): array
+    {
+        return $this->create($payload);
+    }
+
     /** @return array<string, mixed> */
     public function get(string $id): array
     {

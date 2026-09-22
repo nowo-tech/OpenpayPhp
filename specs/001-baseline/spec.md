@@ -1,11 +1,11 @@
 # Feature Specification: Openpay PHP SDK baseline
 
-**Status**: Shipped (`1.0.2`)
+**Status**: Shipped (`1.1.0`)
 **Input**: Clean-room Nowo Openpay REST client (`nowo-tech/openpay-php`).
 
 ## Summary
 
-MIT SDK `Nowo\Openpay\` for public Openpay REST (MX/CO/PE). Worker-safe Session/Client. Resources: charges, customers, cards, tokens.
+MIT SDK `Nowo\Openpay\` for public Openpay REST (MX/CO/PE). Worker-safe Session/Client. Resources: charges, customers, cards, tokens, **webhooks**.
 
 ## User Scenarios
 
