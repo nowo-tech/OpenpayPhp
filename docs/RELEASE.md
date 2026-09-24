@@ -2,7 +2,7 @@
 
 This checklist helps maintainers prepare and publish a release safely.
 
-> Current release: **1.1.0** (tag `v1.1.0`), MIT clean-room `Nowo\Openpay\`.
+> Current release: **1.1.1** (tag `v1.1.1`), MIT clean-room `Nowo\Openpay\`.
 > Tags must match `v*` so `.github/workflows/release.yml` creates the GitHub Release.
 
 The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags are not on this VCS; Packagist cannot install them. Do not retag 3.x onto `main` (wrong API). Restore them only from fork commits (`master` / `OpenpayPhp-fork-archive`).
@@ -23,20 +23,21 @@ The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags
 - [ ] Update [docs/UPGRADING.md](UPGRADING.md) if the public API changed
 - [ ] Bump `Nowo\Openpay\Version::VERSION` in `src/Version.php`
 - [ ] Bump `extra.nowo-package-version` in `composer.json` if present
+- [ ] Confirm [docs/FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md) matches the tagged revision
 
 ## Tag and publish
 
 ```bash
-git tag -a v1.0.2 -m "Release v1.0.2"
+git tag -a v1.1.1 -m "Release v1.1.1"
 git push origin main
-git push origin v1.0.2
+git push origin v1.1.1
 ```
 
 ## Post-release checks
 
 - [ ] Confirm GitHub Release from `release.yml`
 - [ ] Packagist picks up the tag (`nowo-tech/openpay-php`)
-- [ ] `composer require nowo-tech/openpay-php:^1.0` installs `Nowo\Openpay\` (not `Openpay\`)
+- [ ] `composer require nowo-tech/openpay-php:^1.1` installs `Nowo\Openpay\` (not `Openpay\`)
 
 ## Restoring 3.x Packagist tags
 
@@ -55,7 +56,7 @@ git tag -a v3.2.1 778e7d4 -m "Release v3.2.1"
 git push origin 3.1.1.1 3.2.0 v3.2.1
 ```
 
-`3.2.1` is greater than `1.0.2` in Composer. After restoring tags, unpinned `composer require nowo-tech/openpay-php` will resolve to the fork. Integrators of the clean-room SDK must keep `^1.0`.
+`3.2.1` is greater than `1.1.1` in Composer. After restoring tags, unpinned `composer require nowo-tech/openpay-php` will resolve to the fork. Integrators of the clean-room SDK must keep `^1.1` (or `^1.0`).
 
 ## Security checklist (REQ-SEC-002)
 
@@ -67,6 +68,8 @@ git push origin 3.1.1.1 3.2.0 v3.2.1
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| [1.1.1](CHANGELOG.md#111---2026-09-24) | 2026-09-24 | FrankenPHP worker audit (scenario B Viable); worker-strict PHPStan |
+| [1.1.0](CHANGELOG.md#110---2026-09-22) | 2026-09-22 | Webhooks resource + `ResourceApi::add()` |
 | [1.0.2](CHANGELOG.md#102---2026-09-07) | 2026-09-07 | Docs: restore 3.x history; Version identity `1.0.2` |
 | [1.0.1](CHANGELOG.md#101---2026-08-24) | 2026-08-24 | Coverage / Dependabot / Spec Kit; `Nowo\Openpay\` |
 | [1.0.0](CHANGELOG.md#100---2026-08-21) | 2026-08-21 | Clean-room MIT rewrite; dropped `Openpay\` fork and `replace` |

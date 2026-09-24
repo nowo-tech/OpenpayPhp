@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- [From 1.1.0 to 1.1.1](#from-110-to-111)
 - [From 1.0.2 to 1.1.0](#from-102-to-110)
 - [From 1.0.1 to 1.0.2](#from-101-to-102)
 - [From 1.0.0 to 1.0.1](#from-100-to-101)
@@ -9,6 +10,16 @@
 - [From 3.x fork to 1.0.0](#from-3x-fork-to-100)
 - [3.2.0 → 3.2.1 (fork)](#320--321-fork)
 - [3.1.1.1 → 3.2.0 (fork)](#3111--320-fork)
+
+## From 1.1.0 to 1.1.1
+
+No breaking changes. **No application upgrade steps.** FrankenPHP worker audit documented; core types are `readonly` (same immutability as before); PHPStan worker-strict enabled for maintainers.
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
+If you run under FrankenPHP worker with the kernel **not** reset: keep using a new `Credentials` + `Session` per request when `publicIp` or merchant credentials vary. See [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md).
 
 ## From 1.0.2 to 1.1.0
 

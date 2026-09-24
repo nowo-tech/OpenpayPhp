@@ -4,11 +4,12 @@
 
 > ⭐ **Found this useful?** [Install from Packagist](https://packagist.org/packages/nowo-tech/openpay-php) · Star on [GitHub](https://github.com/nowo-tech/OpenpayPhp).
 
-Clean-room PHP SDK for the **public Openpay REST API**. Namespace `Nowo\Openpay\`. License **MIT**. Release **1.1.0**.
+Clean-room PHP SDK for the **public Openpay REST API**. Namespace `Nowo\Openpay\`. License **MIT**. Release **1.1.1**.
 
-Independent implementation from public docs — **not** a redistribution of `openpay/sdk`. No process-wide static merchant credentials (FrankenPHP worker-safe).
+Independent implementation from public docs — **not** a redistribution of `openpay/sdk`. No process-wide static merchant credentials (FrankenPHP worker-safe, including when the kernel is **not** reset between requests).
 
 Merchant resources: **charges**, **customers**, **cards**, **tokens**, **webhooks**.
+
 ![FrankenPHP Friendly Worker Mode](docs/images/frankenphp-friendly.png)
 
 ## Documentation
@@ -20,6 +21,7 @@ Merchant resources: **charges**, **customers**, **cards**, **tokens**, **webhook
 - [Security](docs/SECURITY.md)
 - [Coverage](docs/COVERAGE.md)
 - [FrankenPHP demo](docs/DEMO-FRANKENPHP.md)
+- [FrankenPHP worker mode audit](docs/FRANKENPHP-WORKER-AUDIT.md)
 - [Spec-driven development](docs/SPEC-DRIVEN-DEVELOPMENT.md)
 - [Spec Kit](docs/SPEC-KIT.md)
 - [GitHub CI](docs/GITHUB_CI.md)
@@ -39,6 +41,7 @@ $credentials = new Credentials(
     privateKey: getenv('OPENPAY_PRIVATE_KEY') ?: '',
     country: Country::Mx,
     sandbox: true,
+    publicIp: $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
 );
 
 $session = new Session($credentials);
@@ -51,7 +54,7 @@ $customer = $session->run(static fn (Client $client) => $client->customers->crea
 ## Install
 
 ```bash
-composer require nowo-tech/openpay-php:^1.0
+composer require nowo-tech/openpay-php:^1.1
 ```
 
 ## Tests
