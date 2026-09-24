@@ -10,11 +10,11 @@ use Nowo\Openpay\Exception\OpenpayException;
 /**
  * Thin REST resource helper (path relative to merchant root).
  */
-final class ResourceApi
+final readonly class ResourceApi
 {
     public function __construct(
-        private readonly Client $client,
-        private readonly string $resourcePath,
+        private Client $client,
+        private string $resourcePath,
     ) {
     }
 

@@ -14,17 +14,17 @@ use Nowo\Openpay\Http\HttpClient;
  *
  * Merchant-root resources: charges, customers, cards, tokens, webhooks.
  */
-final class Client
+final readonly class Client
 {
-    public readonly ResourceApi $charges;
-    public readonly ResourceApi $customers;
-    public readonly ResourceApi $cards;
-    public readonly ResourceApi $tokens;
-    public readonly ResourceApi $webhooks;
+    public ResourceApi $charges;
+    public ResourceApi $customers;
+    public ResourceApi $cards;
+    public ResourceApi $tokens;
+    public ResourceApi $webhooks;
 
     public function __construct(
-        private readonly Credentials $credentials,
-        private readonly HttpClient $http = new CurlHttpClient(),
+        private Credentials $credentials,
+        private HttpClient $http = new CurlHttpClient(),
     ) {
         $this->charges = new ResourceApi($this, 'charges');
         $this->customers = new ResourceApi($this, 'customers');

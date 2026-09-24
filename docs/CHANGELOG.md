@@ -11,7 +11,7 @@ The Composer package is [`nowo-tech/openpay-php`](https://packagist.org/packages
 
 | Line | API | Packagist today |
 | --- | --- | --- |
-| **1.x** (`main`) | MIT clean-room `Nowo\Openpay\` | Installable (`v1.0.0`–`v1.1.0`) |
+| **1.x** (`main`) | MIT clean-room `Nowo\Openpay\` | Installable (`v1.0.0`–`v1.1.1`) |
 | **3.x** (former `master` fork) | Apache-2.0 drop-in `Openpay\` (`replace` `openpay/sdk` 3.1.1) | Tags were dropped from this VCS; Composer **cannot** resolve `3.1.1.1` / `3.2.0` / `v3.2.1` |
 
 Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` need either the **3.x fork** or a migration to `Client`/`Session` (1.1+ includes **webhooks**). Until 3.x tags are restored on a Packagist-connected ref, use the archived tree [`nowo-tech/OpenpayPhp-fork-archive`](https://github.com/nowo-tech/OpenpayPhp-fork-archive) branch `master` (commit `bb01997`, release **3.2.1**).
@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.1] - 2026-09-24](#111---2026-09-24)
 - [[1.1.0] - 2026-09-22](#110---2026-09-22)
 - [[1.0.2] - 2026-09-07](#102---2026-09-07)
 - [[1.0.1] - 2026-08-24](#101---2026-08-24)
@@ -28,6 +29,31 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21) (fork, not on Packagist)
 
 ## [Unreleased]
+
+## [1.1.1] - 2026-09-24
+
+### Added
+
+- **Docs:** `docs/FRANKENPHP-WORKER-AUDIT.md` — full audit for FrankenPHP worker with kernel **not** reset (scenario B); verdict **Viable**.
+
+### Changed
+
+- **PHPStan:** include `ruleset-worker-strict.neon` (covers worker rules; no request-superglobal usage in `src/`).
+- **Immutability:** Rector promotes core types to `final readonly class` (`Client`, `Credentials`, `Session`, `ResourceApi`, `CurlHttpClient`, `HttpResponse`).
+- **Demo:** `PaymentController` builds request-scoped `Credentials` with the client IP (worker-safe pattern).
+- **Identity:** `Version::VERSION` and `extra.nowo-package-version` report `1.1.1`.
+
+### Documentation
+
+- **USAGE.md** / **CONFIGURATION.md** / **DEMO-FRANKENPHP.md** / **README.md** / **SECURITY.md**: worker guidance and link to the audit.
+- **specs/001-baseline:** status `1.1.1`; FR-004 + US-002 for worker scenario B.
+
+### Notes
+
+- **No public API changes.** Integrators on `^1.1` only need `composer update`.
+- Residual **Low** finding: default cURL timeouts (5 s / 30 s) can occupy a worker thread; tune via `CurlHttpClient` if needed.
+
+[1.1.1]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.1.1
 
 ## [1.1.0] - 2026-09-22
 

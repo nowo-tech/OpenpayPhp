@@ -82,9 +82,7 @@ final class ClientTest extends TestCase
         self::assertStringContainsString('api.openpay.co', $creds->baseUrl());
 
         $session = new Session($creds, $http);
-        $result = $session->run(static function (Client $client): array {
-            return $client->customerCharges('cus_1')->create(['amount' => 10]);
-        });
+        $result = $session->run(static fn (Client $client): array => $client->customerCharges('cus_1')->create(['amount' => 10]));
         self::assertSame('ch1', $result['id']);
 
         $list = $session->client()->customers->getList(['limit' => 5]);
@@ -130,7 +128,7 @@ final class ClientTest extends TestCase
         self::assertTrue(
             (bool) array_filter($urls, static fn (string $u): bool => str_contains($u, '/charges/tr1/refund'))
         );
-        self::assertSame('1.1.0', Version::VERSION);
+        self::assertSame('1.1.1', Version::VERSION);
     }
 
     public function testWebhooksCreateListGetDelete(): void
@@ -139,8 +137,8 @@ final class ClientTest extends TestCase
         $bodies = [];
         $http = new class($urls, $bodies) implements HttpClient {
             /**
-             * @param list<string>         $urls
-             * @param list<string|null>    $bodies
+             * @param list<string>      $urls
+             * @param list<string|null> $bodies
              */
             public function __construct(private array &$urls, private array &$bodies)
             {

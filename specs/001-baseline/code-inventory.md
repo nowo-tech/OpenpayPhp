@@ -1,6 +1,6 @@
-# Code inventory — OpenpayPhp 1.1.0
+# Code inventory — OpenpayPhp 1.1.1
 
-**Last audited:** 2026-09-22. **Coverage summary:** PHPUnit Lines gate ≥99%.
+**Last audited:** 2026-09-24 (FrankenPHP worker scenario B). **Coverage summary:** PHPUnit Lines gate ≥99% (`make release-check`).
 
 | Unit | Path |
 |------|------|
@@ -10,4 +10,8 @@
 | Country | src/Country.php |
 | ResourceApi | src/Api/ResourceApi.php (`create`/`add`, CRUD, `refund`, `nested`) |
 | CurlHttpClient | src/Http/CurlHttpClient.php |
+| HttpClient / HttpResponse | src/Http/ |
+| OpenpayException | src/Exception/OpenpayException.php |
 | Version | src/Version.php |
+
+Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUDIT.md).

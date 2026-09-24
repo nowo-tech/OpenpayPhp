@@ -9,14 +9,14 @@ use Nowo\Openpay\Exception\OpenpayException;
 /**
  * Merchant credentials (instance-scoped — FrankenPHP / worker safe).
  */
-final class Credentials
+final readonly class Credentials
 {
     public function __construct(
-        private readonly string $merchantId,
-        private readonly string $privateKey,
-        private readonly Country $country = Country::Mx,
-        private readonly bool $sandbox = true,
-        private readonly string $publicIp = '127.0.0.1',
+        private string $merchantId,
+        private string $privateKey,
+        private Country $country = Country::Mx,
+        private bool $sandbox = true,
+        private string $publicIp = '127.0.0.1',
     ) {
         if ('' === $this->merchantId || '' === $this->privateKey) {
             throw new OpenpayException('Merchant id and private key are required.');

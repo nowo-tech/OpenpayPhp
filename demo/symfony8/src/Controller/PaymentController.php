@@ -17,16 +17,23 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PaymentController extends AbstractController
 {
-    private function session(): Session
+    private function session(?string $publicIp = null): Session
     {
         $merchantId = (string) ($_ENV['OPENPAY_MERCHANT_ID'] ?? '');
         $privateKey = (string) ($_ENV['OPENPAY_PRIVATE_KEY'] ?? '');
         $country = Country::tryFrom((string) ($_ENV['OPENPAY_COUNTRY'] ?? 'MX')) ?? Country::Mx;
         $sandbox = (($_ENV['OPENPAY_SANDBOX'] ?? '1') !== '0');
+        // New Credentials per call: publicIp must not live in a shared service under FrankenPHP worker.
+        $hasKeys = '' !== $merchantId && '' !== $privateKey;
+        $credentials = new Credentials(
+            $hasKeys ? $merchantId : 'demo_merchant',
+            $hasKeys ? $privateKey : 'sk_demo',
+            $country,
+            $sandbox,
+            $publicIp ?? '127.0.0.1',
+        );
 
-        if ('' === $merchantId || '' === $privateKey) {
-            $merchantId = 'demo_merchant';
-            $privateKey = 'sk_demo';
+        if (!$hasKeys) {
             $http = new class implements HttpClient {
                 public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
                 {
@@ -40,10 +47,10 @@ final class PaymentController extends AbstractController
                 }
             };
 
-            return new Session(new Credentials($merchantId, $privateKey, $country, $sandbox), $http);
+            return new Session($credentials, $http);
         }
 
-        return new Session(new Credentials($merchantId, $privateKey, $country, $sandbox));
+        return new Session($credentials);
     }
 
     #[Route('/', name: 'home', methods: ['GET'])]
@@ -62,7 +69,7 @@ final class PaymentController extends AbstractController
         $name = (string) $request->request->get('name', 'Demo');
         $email = (string) $request->request->get('email', 'demo@example.test');
 
-        $customer = $this->session()->run(static function (Client $client) use ($name, $email): array {
+        $customer = $this->session($request->getClientIp())->run(static function (Client $client) use ($name, $email): array {
             return $client->customers->create([
                 'name' => $name,
                 'email' => $email,

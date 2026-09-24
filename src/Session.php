@@ -11,11 +11,11 @@ use Nowo\Openpay\Http\HttpClient;
  * Request-scoped helper: build a Client for one logical operation / HTTP request.
  * Prefer this over sharing a Client across FrankenPHP worker requests.
  */
-final class Session
+final readonly class Session
 {
     public function __construct(
-        private readonly Credentials $credentials,
-        private readonly HttpClient $http = new CurlHttpClient(),
+        private Credentials $credentials,
+        private HttpClient $http = new CurlHttpClient(),
     ) {
     }
 
