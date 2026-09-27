@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.2] - 2026-09-27](#112---2026-09-27)
 - [[1.1.1] - 2026-09-24](#111---2026-09-24)
 - [[1.1.0] - 2026-09-22](#110---2026-09-22)
 - [[1.0.2] - 2026-09-07](#102---2026-09-07)
@@ -29,6 +30,14 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21) (fork, not on Packagist)
 
 ## [Unreleased]
+
+## [1.1.2] - 2026-09-27
+
+### Added
+
+- **REQ-CS-008:** `igor-php/igor-php` (require-dev only), root `igor.json`, Composer/`Makefile` `igor` target, and `release-check` wiring for FrankenPHP worker-state audit.
+
+[1.1.2]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.1.2
 
 ## [1.1.1] - 2026-09-24
 

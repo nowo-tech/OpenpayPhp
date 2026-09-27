@@ -2,12 +2,20 @@
     "name": "nowo-tech/openpay-php",
     "description": "Clean-room PHP SDK for the public Openpay REST API. PHP 8.3+ and FrankenPHP worker-safe (no static merchant credentials).",
     "type": "library",
-    "keywords": ["openpay", "payments", "mexico", "php", "sdk", "frankenphp", "nowo"],
+    "keywords": [
+        "openpay",
+        "payments",
+        "mexico",
+        "php",
+        "sdk",
+        "frankenphp",
+        "nowo"
+    ],
     "homepage": "https://github.com/nowo-tech/OpenpayPhp",
     "license": "MIT",
     "authors": [
         {
-            "name": "Héctor Franco Aceituno",
+            "name": "H\u00e9ctor Franco Aceituno",
             "email": "hectorfranco@nowo.tech",
             "homepage": "https://github.com/HecFranco",
             "role": "Maintainer"
@@ -29,6 +37,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.64",
+        "igor-php/igor-php": "^0.9.7",
         "nowo-tech/phpstan-frankenphp": "^1.1",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
@@ -52,10 +61,18 @@
         "rector": "rector process",
         "rector-dry": "rector process --dry-run",
         "phpstan": "phpstan analyse --memory-limit=1G",
-        "qa": ["@cs-check", "@phpstan", "@test"]
+        "qa": [
+            "@cs-check",
+            "@phpstan",
+            "@test"
+        ],
+        "igor": "igor-php --no-agent ."
     },
     "archive": {
-        "exclude": ["/demo", "/.cursor"]
+        "exclude": [
+            "/demo",
+            "/.cursor"
+        ]
     },
     "config": {
         "sort-packages": true,
@@ -70,5 +87,8 @@
         "branch-alias": {
             "dev-main": "1.0.x-dev"
         }
+    },
+    "scripts-descriptions": {
+        "igor": "Run Igor FrankenPHP worker-state audit (REQ-CS-008)"
     }
 }
