@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.3] - 2026-10-09](#113---2026-10-09)
 - [[1.1.2] - 2026-09-27](#112---2026-09-27)
 - [[1.1.1] - 2026-09-24](#111---2026-09-24)
 - [[1.1.0] - 2026-09-22](#110---2026-09-22)
@@ -30,6 +31,20 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21) (fork, not on Packagist)
 
 ## [Unreleased]
+
+## [1.1.3] - 2026-10-09
+
+### Fixed
+
+- Demo (Symfony 8): removed `config/packages/twig_component.yaml` and `validator.yaml`, which configured bundles the demo does not install and broke `cache:clear`.
+- Makefile: `strip-cursor-coauthor-from-history` targets the `main` branch (was `master`, a no-op).
+
+### Changed
+
+- Dev dependencies (Dependabot + lock refresh): PHPStan 2.3.1, PHPUnit 11.5.57, PHP-CS-Fixer 3.95.27, Rector 2.7.0, `igor-php/igor-php` 0.10.1, `nowo-tech/phpstan-frankenphp` 1.2.3.
+- Demo (Symfony 8): Twig 3.30.0, `twig/extra-bundle` 3.29.0, HotReloadBundle 1.5.5, TwigInspectorBundle 1.1.7; regenerated `config/reference.php`.
+
+[1.1.3]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.1.3
 
 ## [1.1.2] - 2026-09-27
 

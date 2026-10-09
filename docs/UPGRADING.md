@@ -3,6 +3,14 @@
 
 ## Unreleased
 
+## To 1.1.3
+
+From **1.1.2** — dependency refresh and demo/Makefile fixes. No breaking changes. No application upgrade steps.
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
 ## To 1.1.2
 
 From **1.1.1** — REQ-CS-008 Igor FrankenPHP worker audit (igor-php require-dev, igor.json, make igor).
@@ -16,6 +24,8 @@ php bin/console cache:clear
 
 ## Table of contents
 
+- [To 1.1.3](#to-113)
+- [To 1.1.2](#to-112)
 - [From 1.1.0 to 1.1.1](#from-110-to-111)
 - [From 1.0.2 to 1.1.0](#from-102-to-110)
 - [From 1.0.1 to 1.0.2](#from-101-to-102)
