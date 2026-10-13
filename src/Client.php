@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nowo\Openpay;
 
 use Nowo\Openpay\Api\ResourceApi;
+use Nowo\Openpay\Exception\OpenpayApiException;
 use Nowo\Openpay\Exception\OpenpayException;
 use Nowo\Openpay\Http\CurlHttpClient;
 use Nowo\Openpay\Http\HttpClient;
@@ -52,6 +53,9 @@ final readonly class Client
      * @param array<string, mixed>|null $payload
      *
      * @return array<string, mixed>
+     *
+     * @throws OpenpayApiException when the API answers with HTTP >= 400 (error_code, category, request_id decoded)
+     * @throws OpenpayException    when the response is not valid JSON
      */
     public function request(string $method, string $relativePath, ?array $payload = null): array
     {
@@ -75,7 +79,7 @@ final readonly class Client
 
         $response = $this->http->request($method, $url, $body, $headers);
         if ($response->statusCode >= 400) {
-            throw new OpenpayException(\sprintf('Openpay API error HTTP %d: %s', $response->statusCode, $response->body), $response->statusCode);
+            throw OpenpayApiException::fromResponse($response->statusCode, $response->body);
         }
 
         if ('' === $response->body) {

@@ -21,8 +21,7 @@ The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags
 - [ ] After the release commit and **before** `git push`, run `make check-no-cursor-coauthor` again (REQ-GIT-001)
 - [ ] Update [docs/CHANGELOG.md](CHANGELOG.md): move `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`
 - [ ] Update [docs/UPGRADING.md](UPGRADING.md) if the public API changed
-- [ ] Bump `Nowo\Openpay\Version::VERSION` in `src/Version.php`
-- [ ] Bump `extra.nowo-package-version` in `composer.json` if present
+- [ ] Bump `Nowo\Openpay\Version::VERSION` in `src/Version.php` and `extra.nowo-package-version` in `composer.json` to the tag being released (`tests/Unit/VersionTest.php` fails if they differ)
 - [ ] Confirm [docs/FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md) matches the tagged revision
 
 ## Tag and publish

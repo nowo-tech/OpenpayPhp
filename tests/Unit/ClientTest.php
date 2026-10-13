@@ -7,11 +7,11 @@ namespace Nowo\Openpay\Tests\Unit;
 use Nowo\Openpay\Client;
 use Nowo\Openpay\Country;
 use Nowo\Openpay\Credentials;
+use Nowo\Openpay\Exception\OpenpayApiException;
 use Nowo\Openpay\Exception\OpenpayException;
 use Nowo\Openpay\Http\HttpClient;
 use Nowo\Openpay\Http\HttpResponse;
 use Nowo\Openpay\Session;
-use Nowo\Openpay\Version;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
@@ -128,7 +128,6 @@ final class ClientTest extends TestCase
         self::assertTrue(
             (bool) array_filter($urls, static fn (string $u): bool => str_contains($u, '/charges/tr1/refund'))
         );
-        self::assertSame('1.1.1', Version::VERSION);
     }
 
     public function testWebhooksCreateListGetDelete(): void
@@ -247,5 +246,111 @@ final class ClientTest extends TestCase
         self::assertTrue($c->isSandbox());
         self::assertSame('1.2.3.4', $c->publicIp());
         self::assertStringContainsString('sandbox-api.openpay.mx', $c->apiRoot());
+    }
+
+    public function testHttpErrorDecodesOpenpayErrorFields(): void
+    {
+        $body = '{"category":"request","description":"The customer does not exist","http_code":404,"error_code":1005,"request_id":"req-123"}';
+        $client = new Client(new Credentials('mid', 'sk'), $this->fixedResponse(404, $body));
+
+        try {
+            $client->customers->get('missing');
+            self::fail('OpenpayApiException expected');
+        } catch (OpenpayApiException $e) {
+            self::assertSame(404, $e->httpStatus);
+            self::assertSame(404, $e->getCode());
+            self::assertSame(1005, $e->errorCode);
+            self::assertSame('request', $e->category);
+            self::assertSame('The customer does not exist', $e->description);
+            self::assertSame('req-123', $e->requestId);
+            self::assertSame($body, $e->responseBody);
+            self::assertStringContainsString('Openpay API error HTTP 404', $e->getMessage());
+        }
+    }
+
+    public function testHttpErrorWithNonJsonBodyLeavesFieldsNull(): void
+    {
+        $client = new Client(new Credentials('mid', 'sk'), $this->fixedResponse(502, 'Bad gateway'));
+
+        try {
+            $client->charges->get('ch1');
+            self::fail('OpenpayApiException expected');
+        } catch (OpenpayApiException $e) {
+            self::assertSame(502, $e->httpStatus);
+            self::assertNull($e->errorCode);
+            self::assertNull($e->category);
+            self::assertNull($e->description);
+            self::assertNull($e->requestId);
+        }
+    }
+
+    public function testHttpErrorAcceptsNumericStringErrorCode(): void
+    {
+        $client = new Client(new Credentials('mid', 'sk'), $this->fixedResponse(400, '{"error_code":"3001","category":""}'));
+
+        try {
+            $client->charges->get('ch1');
+            self::fail('OpenpayApiException expected');
+        } catch (OpenpayApiException $e) {
+            self::assertSame(3001, $e->errorCode);
+            self::assertNull($e->category);
+        }
+    }
+
+    public function testRefundOnCustomerChargesIsAllowed(): void
+    {
+        $urls = [];
+        $http = new class($urls) implements HttpClient {
+            /** @param list<string> $urls */
+            public function __construct(private array &$urls)
+            {
+            }
+
+            public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
+            {
+                $this->urls[] = $url;
+
+                return new HttpResponse(200, '{}');
+            }
+        };
+        $client = new Client(new Credentials('mid', 'sk'), $http);
+        $client->customerCharges('c1')->refund('tr1');
+
+        self::assertStringEndsWith('/customers/c1/charges/tr1/refund', $urls[0]);
+    }
+
+    /**
+     * Regression: refund() used str_contains(path, 'charges'), so a nested resource whose parent id
+     * contains "charges" (e.g. customers/xcharges/cards) was accepted.
+     */
+    public function testRefundOnResourceWhoseIdContainsChargesThrows(): void
+    {
+        $client = new Client(new Credentials('mid', 'sk'), $this->fixedResponse(200, '{}'));
+
+        $this->expectException(OpenpayException::class);
+        $this->expectExceptionMessage('refund() is only available on charges resources.');
+        $client->customerCards('mycharges')->refund('x');
+    }
+
+    public function testPrivateKeyIsRedactedFromStackTraces(): void
+    {
+        $parameters = (new \ReflectionMethod(Credentials::class, '__construct'))->getParameters();
+
+        self::assertSame('privateKey', $parameters[1]->getName());
+        self::assertNotEmpty($parameters[1]->getAttributes(\SensitiveParameter::class));
+    }
+
+    private function fixedResponse(int $status, string $body): HttpClient
+    {
+        return new readonly class($status, $body) implements HttpClient {
+            public function __construct(private int $status, private string $body)
+            {
+            }
+
+            public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
+            {
+                return new HttpResponse($this->status, $this->body);
+            }
+        };
     }
 }

@@ -84,7 +84,8 @@ final readonly class ResourceApi
      */
     public function refund(string $chargeId, array $payload = []): array
     {
-        if (!str_contains($this->resourcePath, 'charges')) {
+        // Only "charges" or ".../{id}/charges"; an id that merely contains "charges" must not pass.
+        if ('charges' !== $this->resourcePath && !str_ends_with($this->resourcePath, '/charges')) {
             throw new OpenpayException('refund() is only available on charges resources.');
         }
 

@@ -13,6 +13,7 @@ final readonly class Credentials
 {
     public function __construct(
         private string $merchantId,
+        #[\SensitiveParameter]
         private string $privateKey,
         private Country $country = Country::Mx,
         private bool $sandbox = true,

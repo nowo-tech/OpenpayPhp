@@ -32,6 +32,23 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Fixed
+
+- **Identity:** `Version::VERSION` (sent in the `User-Agent`) was stuck at `1.1.1` while `v1.1.3` was tagged; it and `extra.nowo-package-version` now report `1.1.4`, and `tests/Unit/VersionTest.php` keeps both in sync.
+- **Refund guard:** `ResourceApi::refund()` only accepts `charges` or `…/{id}/charges` resources; the old `str_contains(path, 'charges')` check let any nested resource whose id contained "charges" through.
+
+### Added
+
+- **API errors:** HTTP >= 400 responses throw `Nowo\Openpay\Exception\OpenpayApiException` (extends `OpenpayException`) exposing `httpStatus`, Openpay `errorCode`, `category`, `description`, `requestId` and `responseBody`. Message and `getCode()` (HTTP status) are unchanged.
+
+### Security
+
+- `Credentials` marks `$privateKey` with `#[\SensitiveParameter]` so it is redacted from stack traces.
+
+### Changed
+
+- Composer: PHP constraint `>=8.3 <8.6` (upper bound like the sibling packages; CI covers 8.3–8.5).
+
 ## [1.1.3] - 2026-10-09
 
 ### Fixed

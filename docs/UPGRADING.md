@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+- **PHP upper bound:** `composer.json` now requires `>=8.3 <8.6`; PHP 8.6+ is not installable until it is tested.
+- **API errors:** HTTP errors are thrown as `OpenpayApiException`, a subclass of `OpenpayException`, so existing `catch (OpenpayException $e)` blocks keep working; catch `OpenpayApiException` to read `errorCode`, `category` and `requestId`.
+- **`refund()` guard:** calling `refund()` on a non-charges resource whose path merely contains "charges" now throws, as documented.
+
 ## To 1.1.3
 
 From **1.1.2** — dependency refresh and demo/Makefile fixes. No breaking changes. No application upgrade steps.

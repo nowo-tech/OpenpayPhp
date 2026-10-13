@@ -31,7 +31,7 @@
         "docs": "https://github.com/nowo-tech/OpenpayPhp/blob/main/docs/USAGE.md"
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.3 <8.6",
         "ext-curl": "*",
         "ext-json": "*"
     },
@@ -83,7 +83,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "extra": {
-        "nowo-package-version": "1.1.1",
+        "nowo-package-version": "1.1.4",
         "branch-alias": {
             "dev-main": "1.0.x-dev"
         }
