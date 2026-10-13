@@ -1,7 +1,14 @@
 # Upgrading
 
-
 ## Unreleased
+
+## To 1.1.4
+
+From **1.1.3** — structured API errors, stricter refund guard, version metadata in sync, PHP <8.6.
+
+```bash
+composer update nowo-tech/openpay-php
+```
 
 - **PHP upper bound:** `composer.json` now requires `>=8.3 <8.6`; PHP 8.6+ is not installable until it is tested.
 - **API errors:** HTTP errors are thrown as `OpenpayApiException`, a subclass of `OpenpayException`, so existing `catch (OpenpayException $e)` blocks keep working; catch `OpenpayApiException` to read `errorCode`, `category` and `requestId`.
@@ -28,6 +35,7 @@ php bin/console cache:clear
 
 ## Table of contents
 
+- [To 1.1.4](#to-114)
 - [To 1.1.3](#to-113)
 - [To 1.1.2](#to-112)
 - [From 1.1.0 to 1.1.1](#from-110-to-111)

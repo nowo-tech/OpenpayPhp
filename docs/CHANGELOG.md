@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.4] - 2026-10-13](#114---2026-10-13)
 - [[1.1.3] - 2026-10-09](#113---2026-10-09)
 - [[1.1.2] - 2026-09-27](#112---2026-09-27)
 - [[1.1.1] - 2026-09-24](#111---2026-09-24)
@@ -31,6 +32,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21) (fork, not on Packagist)
 
 ## [Unreleased]
+
+## [1.1.4] - 2026-10-13
 
 ### Fixed
 
@@ -48,6 +51,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ### Changed
 
 - Composer: PHP constraint `>=8.3 <8.6` (upper bound like the sibling packages; CI covers 8.3–8.5).
+
+[1.1.4]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.1.4
 
 ## [1.1.3] - 2026-10-09
 
