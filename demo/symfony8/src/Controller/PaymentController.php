@@ -7,6 +7,7 @@ namespace App\Controller;
 use Nowo\Openpay\Client;
 use Nowo\Openpay\Country;
 use Nowo\Openpay\Credentials;
+use Nowo\Openpay\Exception\OpenpayApiException;
 use Nowo\Openpay\Http\HttpClient;
 use Nowo\Openpay\Http\HttpResponse;
 use Nowo\Openpay\Session;
@@ -69,12 +70,26 @@ final class PaymentController extends AbstractController
         $name = (string) $request->request->get('name', 'Demo');
         $email = (string) $request->request->get('email', 'demo@example.test');
 
-        $customer = $this->session($request->getClientIp())->run(static function (Client $client) use ($name, $email): array {
-            return $client->customers->create([
-                'name' => $name,
-                'email' => $email,
-            ]);
-        });
+        try {
+            $customer = $this->session($request->getClientIp())->run(static function (Client $client) use ($name, $email): array {
+                return $client->customers->create([
+                    'name' => $name,
+                    'email' => $email,
+                ]);
+            });
+        } catch (OpenpayApiException $e) {
+            // Openpay error bodies are exposed as structured fields (since 1.1.4).
+            return $this->render('payment/result.html.twig', [
+                'title' => 'Openpay API error',
+                'payload' => [
+                    'http_status' => $e->httpStatus,
+                    'error_code' => $e->errorCode,
+                    'category' => $e->category,
+                    'description' => $e->description,
+                    'request_id' => $e->requestId,
+                ],
+            ], new Response(status: $e->httpStatus >= 500 ? 502 : 422));
+        }
 
         return $this->render('payment/result.html.twig', [
             'title' => 'Customer created',
