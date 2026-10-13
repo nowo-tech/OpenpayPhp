@@ -1,5 +1,22 @@
 # Upgrading
 
+## Table of contents
+
+- [Unreleased](#unreleased)
+- [To 1.1.4](#to-114)
+- [To 1.1.3](#to-113)
+- [To 1.1.2](#to-112)
+- [From 1.1.0 to 1.1.1](#from-110-to-111)
+- [From 1.0.2 to 1.1.0](#from-102-to-110)
+- [From 1.0.1 to 1.0.2](#from-101-to-102)
+- [From 1.0.0 to 1.0.1](#from-100-to-101)
+- [From 3.x fork to 1.1.0](#from-3x-fork-to-110)
+- [From 3.x fork to 1.0.0](#from-3x-fork-to-100)
+- [3.2.0 → 3.2.1 (fork)](#320--321-fork)
+- [3.1.1.1 → 3.2.0 (fork)](#3111--320-fork)
+  - [PHP 8.3 is required](#php-83-is-required)
+  - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
+
 ## Unreleased
 
 ## To 1.1.4
@@ -32,20 +49,6 @@ php bin/console cache:clear
 ```
 
 - No application upgrade steps for require-dev Igor tooling (REQ-CS-008). Consumers do not pull `igor-php/igor-php` transitively.
-
-## Table of contents
-
-- [To 1.1.4](#to-114)
-- [To 1.1.3](#to-113)
-- [To 1.1.2](#to-112)
-- [From 1.1.0 to 1.1.1](#from-110-to-111)
-- [From 1.0.2 to 1.1.0](#from-102-to-110)
-- [From 1.0.1 to 1.0.2](#from-101-to-102)
-- [From 1.0.0 to 1.0.1](#from-100-to-101)
-- [From 3.x fork to 1.1.0](#from-3x-fork-to-110)
-- [From 3.x fork to 1.0.0](#from-3x-fork-to-100)
-- [3.2.0 → 3.2.1 (fork)](#320--321-fork)
-- [3.1.1.1 → 3.2.0 (fork)](#3111--320-fork)
 
 ## From 1.1.0 to 1.1.1
 
