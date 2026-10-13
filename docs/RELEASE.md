@@ -2,7 +2,7 @@
 
 This checklist helps maintainers prepare and publish a release safely.
 
-> Current release: **1.1.1** (tag `v1.1.1`), MIT clean-room `Nowo\Openpay\`.
+> Current release: **1.1.4** (tag `v1.1.4`), MIT clean-room `Nowo\Openpay\`.
 > Tags must match `v*` so `.github/workflows/release.yml` creates the GitHub Release.
 
 The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags are not on this VCS; Packagist cannot install them. Do not retag 3.x onto `main` (wrong API). Restore them only from fork commits (`master` / `OpenpayPhp-fork-archive`).
@@ -27,9 +27,9 @@ The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags
 ## Tag and publish
 
 ```bash
-git tag -a v1.1.1 -m "Release v1.1.1"
+git tag -a vX.Y.Z -m "Release vX.Y.Z"
 git push origin main
-git push origin v1.1.1
+git push origin vX.Y.Z
 ```
 
 ## Post-release checks
@@ -67,6 +67,9 @@ git push origin 3.1.1.1 3.2.0 v3.2.1
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| [1.1.4](CHANGELOG.md#114---2026-10-13) | 2026-10-13 | `OpenpayApiException`, stricter `refund()` guard, `Version` synced, PHP `<8.6` |
+| [1.1.3](CHANGELOG.md#113---2026-10-09) | 2026-10-09 | Demo `cache:clear` fix; Makefile `main` branch |
+| [1.1.2](CHANGELOG.md#112---2026-09-27) | 2026-09-27 | Igor worker-state audit (dev) |
 | [1.1.1](CHANGELOG.md#111---2026-09-24) | 2026-09-24 | FrankenPHP worker audit (scenario B Viable); worker-strict PHPStan |
 | [1.1.0](CHANGELOG.md#110---2026-09-22) | 2026-09-22 | Webhooks resource + `ResourceApi::add()` |
 | [1.0.2](CHANGELOG.md#102---2026-09-07) | 2026-09-07 | Docs: restore 3.x history; Version identity `1.0.2` |

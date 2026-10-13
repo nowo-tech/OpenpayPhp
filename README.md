@@ -4,7 +4,7 @@
 
 > ⭐ **Found this useful?** [Install from Packagist](https://packagist.org/packages/nowo-tech/openpay-php) · Star on [GitHub](https://github.com/nowo-tech/OpenpayPhp).
 
-Clean-room PHP SDK for the **public Openpay REST API**. Namespace `Nowo\Openpay\`. License **MIT**. Release **1.1.1**.
+Clean-room PHP SDK for the **public Openpay REST API**. Namespace `Nowo\Openpay\`. License **MIT**. Release **1.1.4**.
 
 Independent implementation from public docs — **not** a redistribution of `openpay/sdk`. No process-wide static merchant credentials (FrankenPHP worker-safe, including when the kernel is **not** reset between requests).
 
