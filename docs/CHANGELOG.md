@@ -33,6 +33,10 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Changed
+
+- Dependencies refreshed (Composer and pnpm/npm lock files of the bundle and its demos, campaign 2026-10-19).
+
 ### Documentation
 
 - Documentation: wave-1 REQ compliance — README rebuilt in the canonical order (badges incl. Downloads/GitHub stars/Coverage, FrankenPHP claim, Features → Installation → Quick start → Requirements → Documentation → Tests and coverage), canonical issue templates (legacy bug_report/feature_request removed), CODEOWNERS and PR template, CONTRIBUTING Cursor Agent settings, TOCs, DEMO-FRANKENPHP dev/prod start, timeouts and troubleshooting, commented demo `.env.example`, demo Compose name `openpay-php-demo-symfony-8`, spec-driven development rewrite, full GitHub Spec Kit manual, baseline spec (US-*, grouped FR-*, SC-*) and categorized inventory (11/11).
