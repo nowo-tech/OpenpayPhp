@@ -13,6 +13,7 @@ The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags
 - [Tag and publish](#tag-and-publish)
 - [Post-release checks](#post-release-checks)
 - [Restoring 3.x Packagist tags](#restoring-3x-packagist-tags)
+- [Security checklist (REQ-SEC-002)](#security-checklist-req-sec-002)
 - [Release history](#release-history)
 
 ## Pre-release

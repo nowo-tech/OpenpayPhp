@@ -1,7 +1,15 @@
-# Code Owners for Openpay PHP SDK (Nowo fork)
-
+# CODEOWNERS for OpenpayPhp
+# Default owner for everything in the repository
 * @HecFranco
 
+# GitHub metadata and workflows
 /.github/ @HecFranco
-/Openpay/ @HecFranco
+
+# Source code
+/src/ @HecFranco
+
+# Tests
 /tests/ @HecFranco
+
+# Optional: scripts / tooling
+/.scripts/ @HecFranco

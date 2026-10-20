@@ -1,4 +1,4 @@
-name: openpay-php-demo-symfony8
+name: openpay-php-demo-symfony-8
 
 services:
   php:

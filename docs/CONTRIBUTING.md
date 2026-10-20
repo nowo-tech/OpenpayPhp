@@ -2,6 +2,17 @@
 
 Thank you for considering contributing to the Nowo Openpay PHP SDK.
 
+## Table of contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Maintainer](#maintainer)
+- [Development setup](#development-setup)
+- [Pull requests](#pull-requests)
+- [Coding standards](#coding-standards)
+- [Cursor Agent](#cursor-agent)
+- [Igor worker audit (REQ-CS-008)](#igor-worker-audit-req-cs-008)
+- [AI co-author trailers](#ai-co-author-trailers)
+
 ## Code of Conduct
 
 This project follows the [Contributor Covenant Code of Conduct](../CODE_OF_CONDUCT.md).
@@ -46,11 +57,18 @@ fails on historical trailers, run `make strip-cursor-coauthor-from-history`
 
 ## Cursor Agent
 
-Submit prompts with **Ctrl+Enter**. Queue follow-ups (`queueMessageDefaultBehavior: queue`)
-so the agent finishes the current turn before the next message.
+Contributors using Cursor Agent on this repository should enable these user-level settings (REQ-IDE-006):
 
-Do **not** add `Co-authored-by: Cursor <cursoragent@cursor.com>` trailers
-(REQ-GIT-001). Install hooks with `make setup-hooks`.
+1. **Submit with Ctrl + Enter** (macOS: **⌘ + Enter**) — Cursor Settings → Agents / Chat. Enter inserts a newline; Ctrl/⌘+Enter submits.
+2. **Queue follow-ups** in user `settings.json` (Linux `~/.config/Cursor/User/settings.json`, Windows `%APPDATA%\Cursor\User\settings.json`, macOS `~/Library/Application Support/Cursor/User/settings.json`):
+
+```json
+{
+  "cursor.composer.queueMessageDefaultBehavior": "queue"
+}
+```
+
+Do not use `"steer"` as the default: it interrupts a running agent turn.
 
 ## Igor worker audit (REQ-CS-008)
 

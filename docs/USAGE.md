@@ -23,6 +23,12 @@ $charge = $session->run(static function (Client $client) {
 
 Nested customer resources: `$client->customerCharges($id)`, `$client->customerCards($id)`.
 
+## Table of contents
+
+- [Webhooks](#webhooks)
+- [Errors](#errors)
+- [FrankenPHP worker mode](#frankenphp-worker-mode)
+
 ## Webhooks
 
 ```php

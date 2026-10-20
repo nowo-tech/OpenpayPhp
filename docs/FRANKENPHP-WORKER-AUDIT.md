@@ -8,6 +8,16 @@
 | Method | Manual review of every file under `src/` + PHPStan classic / **worker-strict** rulesets + demo controller review |
 | **Verdict** | ✅ **Viable** — all classes are immutable, there is no static or global merchant state, cURL calls have explicit timeouts, and the library is safe when the Symfony kernel is **not** reset between FrankenPHP worker requests |
 
+## Table of contents
+
+- [Execution model assumed](#execution-model-assumed)
+- [Summary](#summary)
+- [Services reviewed](#services-reviewed)
+- [Findings](#findings)
+  - [W-01 — Default cURL timeouts can hold a worker thread for up to 35 seconds (Low)](#w-01--default-curl-timeouts-can-hold-a-worker-thread-for-up-to-35-seconds-low)
+- [Usage recommendations in worker mode](#usage-recommendations-in-worker-mode)
+- [Re-audit triggers](#re-audit-triggers)
+
 ## Execution model assumed
 
 FrankenPHP worker mode boots the Symfony kernel once per worker and serves many requests with the same container. This audit assumes the **strict** variant: the kernel is **not** rebooted between requests, so every shared service, static property and PHP global survives from one request to the next. Two scenarios are evaluated:
