@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.2.0] - 2026-10-22](#120---2026-10-22)
 - [[1.1.4] - 2026-10-13](#114---2026-10-13)
 - [[1.1.3] - 2026-10-09](#113---2026-10-09)
 - [[1.1.2] - 2026-09-27](#112---2026-09-27)
@@ -32,6 +33,10 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21)
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-10-22
+
+Optional PSR-3 logging of API calls, cURL timeout test, full security guide, release gates and demo smoke workflow. See [UPGRADING](UPGRADING.md#to-120).
 
 ### Added
 
@@ -48,6 +53,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ### Documentation
 
 - Documentation: wave-1 REQ compliance — README rebuilt in the canonical order (badges incl. Downloads/GitHub stars/Coverage, FrankenPHP claim, Features → Installation → Quick start → Requirements → Documentation → Tests and coverage), canonical issue templates (legacy bug_report/feature_request removed), CODEOWNERS and PR template, CONTRIBUTING Cursor Agent settings, TOCs, DEMO-FRANKENPHP dev/prod start, timeouts and troubleshooting, commented demo `.env.example`, demo Compose name `openpay-php-demo-symfony-8`, spec-driven development rewrite, full GitHub Spec Kit manual, baseline spec (US-*, grouped FR-*, SC-*) and categorized inventory (11/11).
+
+[1.2.0]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.2.0
 
 ## [1.1.4] - 2026-10-13
 

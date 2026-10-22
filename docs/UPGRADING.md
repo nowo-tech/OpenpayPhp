@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Unreleased](#unreleased)
+- [To 1.2.0](#to-120)
 - [To 1.1.4](#to-114)
 - [To 1.1.3](#to-113)
 - [To 1.1.2](#to-112)
@@ -18,6 +19,14 @@
   - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
 
 ## Unreleased
+
+## To 1.2.0
+
+From **1.1.4**:
+
+```bash
+composer update nowo-tech/openpay-php
+```
 
 - New runtime requirement `psr/log` (interfaces only). Optionally pass your logger: `new Session($credentials, new CurlHttpClient(), $logger)`.
 
