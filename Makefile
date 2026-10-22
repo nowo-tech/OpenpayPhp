@@ -1,13 +1,13 @@
 # Makefile for Openpay PHP SDK (Nowo fork)
 # REQ-MAKE-001 / REQ-MAKE-002 / REQ-MAKE-006 / REQ-MAKE-008 / REQ-MAKE-010
 
-.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history
+.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history check-open-prs demo-smoke release-check-demos update-deps
 
 COMPOSER_BIN := /usr/bin/composer
 COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
 
 help:
-	@echo "Openpay PHP SDK — Development Commands"
+	@echo "Openpay PHP SDK - Development Commands"
 	@echo ""
 	@echo "Usage: make <target>"
 	@echo ""
@@ -18,6 +18,7 @@ help:
 	@echo "  build         Build Docker image"
 	@echo "  shell         Open shell in container"
 	@echo "  install       Install Composer dependencies"
+	@echo "  assets        No-op (no frontend assets in this library)"
 	@echo "  test          Run PHPUnit tests"
 	@echo "  test-coverage Run tests with code coverage"
 	@echo "  cs-check      Check code style"
@@ -27,8 +28,20 @@ help:
 	@echo "  phpstan       Run PHPStan static analysis"
 	@echo "  igor          Run Igor worker-state audit (REQ-CS-008)"
 	@echo "  qa            Run QA checks (cs-check + phpstan + test)"
-	@echo "  release-check Run full pre-release validation chain"
+	@echo "  release-check Run the full pre-release validation chain"
+	@echo "  composer-sync Validate composer.json and align composer.lock (no install)"
+	@echo "  clean         Remove vendor, caches and coverage output"
+	@echo "  update        Update composer.lock (composer update)"
+	@echo "  update-deps   Update library and demo dependencies (REQ-MAKE-008)"
+	@echo "  validate      Run composer validate --strict"
+	@echo ""
+	@echo "Library-specific:"
+	@echo "  check-open-prs Fail if unresolved open GitHub PRs remain (REQ-REL-003)"
+	@echo "  demo-smoke    Boot demo/symfony8 and assert a final HTTP 200 (REQ-TEST-011)"
 	@echo "  setup-hooks   Install git hooks (REQ-GIT-001)"
+	@echo ""
+	@echo "Demos: make -C demo (see demo/symfony8/README.md)"
+	@echo ""
 
 ensure-up:
 	@if ! $(COMPOSE) exec -T php true 2>/dev/null; then \
@@ -100,14 +113,30 @@ composer-sync: ensure-up
 # Run Igor worker-state audit (REQ-CS-008)
 igor: ensure-up
 	$(COMPOSE) exec -T php composer igor
-release-check: check-no-cursor-coauthor
+release-check:
 	@$(MAKE) ensure-up
+	@$(MAKE) check-no-cursor-coauthor
+	@$(MAKE) check-open-prs
 	@$(MAKE) composer-sync
 	@$(MAKE) cs-fix
 	@$(MAKE) cs-check
 	@$(MAKE) rector-dry
 	@$(MAKE) phpstan
+	@$(MAKE) igor
 	@$(MAKE) test-coverage
+	@$(MAKE) release-check-demos
+
+release-check-demos:
+	@if [ -f demo/Makefile ]; then $(MAKE) -C demo release-check; fi
+
+# REQ-REL-003 — no unresolved open GitHub PRs before release
+check-open-prs:
+	@chmod +x .scripts/check-open-prs.sh
+	@bash .scripts/check-open-prs.sh
+
+# REQ-TEST-011 — boot the demo and assert a final HTTP 200
+demo-smoke:
+	@$(MAKE) -C demo demo-smoke
 
 update: ensure-up
 	$(COMPOSE) exec -T php $(COMPOSER_BIN) update --no-interaction

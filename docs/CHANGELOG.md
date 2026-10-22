@@ -33,9 +33,17 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Added
+
+- Optional PSR-3 logger on `Client` / `Session` (third constructor argument): API calls (`info`), API errors with Openpay error code / category / request id (`warning`) and transport failures (`error`), never keys, payloads or card data (REQ-OBS-001). `psr/log` is now a runtime requirement.
+
 ### Changed
 
 - Dependencies refreshed (Composer and pnpm/npm lock files of the bundle and its demos, campaign 2026-10-19).
+- A cURL timeout / transport failure is now covered by a test against an unresponsive local endpoint (REQ-RUNTIME-001); the demo sets PHP `max_execution_time` 45 s and FrankenPHP `max_wait_time` 30 s, documented with the PHP image policy in `docs/DEMO-FRANKENPHP.md` and in `docs/CONFIGURATION.md` (Timeouts, Logging) (REQ-DEMO-010).
+- `docs/SECURITY.md` rewritten with scope, attack surface, threat model, secrets, timeouts, logging, dependencies, exposure and the release security checklist; `.github/SECURITY.md` follows the canonical template (1.x, `hectorfranco@nowo.tech`) (REQ-SEC-001, REQ-SEC-002, REQ-SEC-003).
+- `release-check` starts with `ensure-up` and runs `check-open-prs`, `igor` and the demo release check; root `make demo-smoke` and a `Demo smoke` workflow (final HTTP 200) (REQ-MAKE-002, REQ-CS-008, REQ-TEST-011); `make help` follows the standard block order (REQ-MAKE-001).
+- PHPDoc on every public class and method (REQ-CS-001); Cursor rules describe the repository as a library (REQ-IDE-004); demo DNS override commented (REQ-DEMO-009); the co-author check accepts git worktrees.
 
 ### Documentation
 

@@ -19,6 +19,8 @@
 
 ## Unreleased
 
+- New runtime requirement `psr/log` (interfaces only). Optionally pass your logger: `new Session($credentials, new CurlHttpClient(), $logger)`.
+
 ## To 1.1.4
 
 From **1.1.3** — structured API errors, stricter refund guard, version metadata in sync, PHP <8.6.

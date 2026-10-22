@@ -11,12 +11,14 @@ use Nowo\Openpay\Exception\OpenpayException;
  */
 final readonly class CurlHttpClient implements HttpClient
 {
+    /** cURL transport; connect and total timeouts in seconds (REQ-RUNTIME-001). */
     public function __construct(
         private int $connectTimeoutSeconds = 5,
         private int $timeoutSeconds = 30,
     ) {
     }
 
+    /** Sends one JSON request; throws OpenpayException on transport failure or timeout. */
     public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
     {
         $ch = curl_init($url);
@@ -49,11 +51,9 @@ final readonly class CurlHttpClient implements HttpClient
         }
 
         $raw = curl_exec($ch);
-        // @codeCoverageIgnoreStart
         if (!\is_string($raw)) {
             throw new OpenpayException('Openpay HTTP request failed: '.curl_error($ch));
         }
-        // @codeCoverageIgnoreEnd
 
         $status = curl_getinfo($ch, \CURLINFO_RESPONSE_CODE);
         $headerSize = curl_getinfo($ch, \CURLINFO_HEADER_SIZE);

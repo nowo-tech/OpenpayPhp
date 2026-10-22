@@ -100,7 +100,7 @@ make qa
 ```
 
 - Tests: PHPUnit (unit)
-- PHP: **100%** lines (117/117; gate ≥ 99% via `make release-check`, see [docs/COVERAGE.md](docs/COVERAGE.md))
+- PHP: **100%** lines (131/131; gate ≥ 99% via `make release-check`, see [docs/COVERAGE.md](docs/COVERAGE.md))
 - TS/JS: N/A
 - Python: N/A
 

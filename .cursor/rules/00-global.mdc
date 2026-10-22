@@ -3,7 +3,7 @@ description: Global rules for Symfony bundle repository
 alwaysApply: true
 ---
 
-Assume this repository is a reusable Symfony bundle.
+Assume this repository is a framework-agnostic PHP library (the Openpay SDK) with a Symfony demo under demo/, not a Symfony bundle.
 
 Prefer:
 - minimal, local changes

@@ -16,6 +16,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="/app/vendor/bin:${PATH}"
 ENV SERVER_NAME=:80
 
+# REQ-RUNTIME-001: PHP deadline strictly greater than the SDK cURL timeouts (5 s connect + 30 s total).
+RUN printf 'max_execution_time = 45\nmax_input_time = 45\n' > "$PHP_INI_DIR/conf.d/90-timeouts.ini"
+
 COPY docker/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
 COPY docker/frankenphp/Caddyfile.dev /etc/frankenphp/Caddyfile.dev
 

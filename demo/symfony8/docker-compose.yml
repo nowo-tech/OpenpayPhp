@@ -27,6 +27,7 @@ services:
       - OPENPAY_COUNTRY=${OPENPAY_COUNTRY:-MX}
       - OPENPAY_SANDBOX=${OPENPAY_SANDBOX:-1}
       - DEFAULT_URI=${DEFAULT_URI:-http://localhost:8021}
+    # REQ-DEMO-009: public resolvers so Composer reaches Packagist even when the host/WSL resolver fails inside Docker.
     dns:
       - 8.8.8.8
       - 8.8.4.4

@@ -23,7 +23,7 @@ Others are **N/A** (or already covered by Symfony) so the decision stays auditab
 
 | PSR | Decision | Notes |
 | --- | -------- | ----- |
-| PSR-3 Logger | **N/A** | No logging SPI in this package. |
+| PSR-3 Logger | **Adopted** | `Client` / `Session` accept an optional `Psr\Log\LoggerInterface` for API calls and transport failures (no keys, payloads or card data; see [SECURITY.md](SECURITY.md#logging)). |
 | PSR-6 / PSR-16 Cache | **N/A** | No package-owned cache layer. |
 | PSR-7 / PSR-17 HTTP messages | **N/A** | Symfony HttpFoundation (or no HTTP messages API) is the correct surface; a PSR-7 bridge would not help consumers. |
 | PSR-18 HTTP client | **N/A** | Outbound HTTP uses a package-specific transport/client interface (swap in tests); PSR-18 is optional and not required for value today. |

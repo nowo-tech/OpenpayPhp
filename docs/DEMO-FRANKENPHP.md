@@ -52,6 +52,8 @@ In a real deployment, bake the application into the image (no bind mount), keep 
 | Worker (default) | `FRANKENPHP_MODE=worker` | `docker/frankenphp/Caddyfile` | Long-lived workers; the kernel is reused between requests |
 | Classic | `FRANKENPHP_MODE=classic` | `docker/frankenphp/Caddyfile.dev` | One PHP execution per request |
 
+The demo image is `dunglas/frankenphp:1-php8.5-alpine`, the newest FrankenPHP PHP tag allowed by the package `require.php` (`>=8.3 <8.6`); bump it together with `require.php`. `FRANKENPHP_MODE` is set only in `.env` / Compose (never baked into the image) and the entrypoint fails fast on any other value.
+
 The entrypoint copies the matching Caddyfile at container start. `docker compose restart` does not reload `.env`; recreate the containers after changing the mode.
 
 ## Timeouts (REQ-RUNTIME-001)
@@ -62,8 +64,9 @@ The demo performs blocking outbound HTTP (Openpay REST) from a request, so the t
 | --- | --- | --- |
 | cURL connect | 5 s | `CurlHttpClient` `connectTimeoutSeconds` |
 | cURL total | 30 s | `CurlHttpClient` `timeoutSeconds` |
-| PHP execution | must be greater than 35 s when using the defaults | PHP ini / `set_time_limit` |
-| Caddy / reverse proxy | must be greater than the PHP limit | Caddy `timeouts` / upstream proxy |
+| PHP execution | **45 s** in the demo (must be greater than 35 s with the defaults) | `demo/symfony8/Dockerfile` → `conf.d/90-timeouts.ini` |
+| FrankenPHP wait for a free thread | **30 s** → 504 | `max_wait_time` in both `docker/frankenphp/Caddyfile*` |
+| Caddy / reverse proxy write timeout | must be greater than the PHP limit | not set in the demo: its Mercure / hot-reload SSE streams would be cut by a server-wide write timeout; set it in production when you do not serve SSE |
 
 For interactive payment flows, pass shorter values to `new CurlHttpClient(connectTimeoutSeconds: …, timeoutSeconds: …)` so a slow Openpay host does not hold a worker thread (audit finding W-01).
 

@@ -12,6 +12,7 @@ use Nowo\Openpay\Exception\OpenpayException;
  */
 final readonly class ResourceApi
 {
+    /** API for one Openpay resource path (e.g. charges, customers/{id}/cards), bound to a client. */
     public function __construct(
         private Client $client,
         private string $resourcePath,
@@ -96,6 +97,7 @@ final readonly class ResourceApi
         );
     }
 
+    /** Returns the API of a child resource of the given parent id (e.g. customers/{id}/charges). */
     public function nested(string $parentId, string $childResource): self
     {
         return new self(

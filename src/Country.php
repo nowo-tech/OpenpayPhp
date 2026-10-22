@@ -13,6 +13,7 @@ enum Country: string
     case Co = 'CO';
     case Pe = 'PE';
 
+    /** Sandbox API base URL for this country. */
     public function sandboxBaseUrl(): string
     {
         return match ($this) {
@@ -22,6 +23,7 @@ enum Country: string
         };
     }
 
+    /** Production API base URL for this country. */
     public function productionBaseUrl(): string
     {
         return match ($this) {

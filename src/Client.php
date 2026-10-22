@@ -9,6 +9,7 @@ use Nowo\Openpay\Exception\OpenpayApiException;
 use Nowo\Openpay\Exception\OpenpayException;
 use Nowo\Openpay\Http\CurlHttpClient;
 use Nowo\Openpay\Http\HttpClient;
+use Psr\Log\LoggerInterface;
 
 /**
  * Openpay API client (no process-wide static credentials).
@@ -23,9 +24,16 @@ final readonly class Client
     public ResourceApi $tokens;
     public ResourceApi $webhooks;
 
+    /**
+     * Creates a client for the given merchant credentials and HTTP transport (cURL by default).
+     *
+     * @param LoggerInterface|null $logger Logs every API call (method, status, Openpay error code/category/request id)
+     *                                     and transport failures; never the private key, payloads or card data (REQ-OBS-001)
+     */
     public function __construct(
         private Credentials $credentials,
         private HttpClient $http = new CurlHttpClient(),
+        private ?LoggerInterface $logger = null,
     ) {
         $this->charges = new ResourceApi($this, 'charges');
         $this->customers = new ResourceApi($this, 'customers');
@@ -34,16 +42,19 @@ final readonly class Client
         $this->webhooks = new ResourceApi($this, 'webhooks');
     }
 
+    /** Returns the merchant credentials this client signs requests with. */
     public function credentials(): Credentials
     {
         return $this->credentials;
     }
 
+    /** Charges of one customer (customers/{id}/charges). */
     public function customerCharges(string $customerId): ResourceApi
     {
         return $this->customers->nested($customerId, 'charges');
     }
 
+    /** Stored cards of one customer (customers/{id}/cards). */
     public function customerCards(string $customerId): ResourceApi
     {
         return $this->customers->nested($customerId, 'cards');
@@ -77,10 +88,26 @@ final readonly class Client
             'X-Forwarded-For' => $this->credentials->publicIp(),
         ];
 
-        $response = $this->http->request($method, $url, $body, $headers);
-        if ($response->statusCode >= 400) {
-            throw OpenpayApiException::fromResponse($response->statusCode, $response->body);
+        $context = ['sdk' => 'openpay', 'action' => 'api_request', 'method' => strtoupper($method)];
+        try {
+            $response = $this->http->request($method, $url, $body, $headers);
+        } catch (OpenpayException $e) {
+            $this->logger?->error('Openpay API request failed (transport).', $context + ['exception' => $e::class]);
+
+            throw $e;
         }
+        if ($response->statusCode >= 400) {
+            $error = OpenpayApiException::fromResponse($response->statusCode, $response->body);
+            $this->logger?->warning('Openpay API returned an error.', $context + [
+                'status' => $response->statusCode,
+                'error_code' => $error->errorCode,
+                'category' => $error->category,
+                'request_id' => $error->requestId,
+            ]);
+
+            throw $error;
+        }
+        $this->logger?->info('Openpay API request completed.', $context + ['status' => $response->statusCode]);
 
         if ('' === $response->body) {
             return [];

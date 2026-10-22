@@ -14,6 +14,7 @@ namespace Nowo\Openpay\Exception;
  */
 final class OpenpayApiException extends OpenpayException
 {
+    /** Error returned by the Openpay API, with the parsed error fields. */
     public function __construct(
         string $message,
         public readonly int $httpStatus,
