@@ -53,6 +53,7 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 
 - **FR-HTTP-001**: `HttpClient` is the transport contract; `HttpResponse` carries status code, body and headers.
 - **FR-HTTP-002**: `CurlHttpClient` enforces connect (5 s) and total (30 s) timeouts, configurable per instance (REQ-RUNTIME-001), and uses the OS trust store for TLS.
+- **FR-HTTP-003**: `Psr18HttpClient` adapts any PSR-18 client plus PSR-17 request/stream factories to `HttpClient`; PSR-18 client exceptions become `OpenpayException` (REQ-CS-007).
 
 ### Errors (`FR-ERR-*`)
 

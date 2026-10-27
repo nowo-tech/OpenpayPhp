@@ -34,6 +34,18 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Added
+
+- `Nowo\Openpay\Http\Psr18HttpClient`: PSR-18 transport adapter (any `Psr\Http\Client\ClientInterface` + PSR-17 request/stream factories, e.g. Symfony `Psr18Client` or Guzzle) for `Client` / `Session`; a PSR-18 `ClientExceptionInterface` becomes `OpenpayException` (REQ-CS-007). `psr/http-client`, `psr/http-factory` and `psr/http-message` are new runtime requirements (interfaces only). See [UPGRADING](UPGRADING.md#unreleased).
+
+### Changed
+
+- Demo: the "Create customer" form is now a Symfony Form Type (`App\Form\CustomerType`, CSRF + validation) rendered with `form_start` / child `form_row` loop / `form_end`; new `make check-no-raw-html-form` gate (part of `release-check`) fails on raw `<form>` / `<input>` / `<textarea>` / `<select>` in demo Twig (REQ-DEMO-001, REQ-TWIG-005).
+
+### Documentation
+
+- `docs/PSR.md`: PSR-18 / PSR-17 adopted through `Psr18HttpClient`; summary updated (PSR-3 + PSR-18/PSR-17 adopted). CONFIGURATION, SECURITY, worker audit, USAGE and Spec Kit inventory list the PSR-18 transport.
+
 ## [1.2.0] - 2026-10-22
 
 Optional PSR-3 logging of API calls, cURL timeout test, full security guide, release gates and demo smoke workflow. See [UPGRADING](UPGRADING.md#to-120).

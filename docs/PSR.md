@@ -25,8 +25,8 @@ Others are **N/A** (or already covered by Symfony) so the decision stays auditab
 | --- | -------- | ----- |
 | PSR-3 Logger | **Adopted** | `Client` / `Session` accept an optional `Psr\Log\LoggerInterface` for API calls and transport failures (no keys, payloads or card data; see [SECURITY.md](SECURITY.md#logging)). |
 | PSR-6 / PSR-16 Cache | **N/A** | No package-owned cache layer. |
-| PSR-7 / PSR-17 HTTP messages | **N/A** | Symfony HttpFoundation (or no HTTP messages API) is the correct surface; a PSR-7 bridge would not help consumers. |
-| PSR-18 HTTP client | **N/A** | Outbound HTTP uses a package-specific transport/client interface (swap in tests); PSR-18 is optional and not required for value today. |
+| PSR-7 / PSR-17 HTTP messages | **Adopted (transport boundary)** | `Psr18HttpClient` builds PSR-7 requests with the PSR-17 `RequestFactoryInterface` / `StreamFactoryInterface` you inject; the SDK public API stays array-based (no PSR-7 in `Client`). |
+| PSR-18 HTTP client | **Adopted** | `Nowo\Openpay\Http\Psr18HttpClient` accepts any `Psr\Http\Client\ClientInterface` (Symfony `Psr18Client`, Guzzle, …) as the SDK transport; `ClientExceptionInterface` becomes `OpenpayException`. `HttpClient` stays the internal SPI (default `CurlHttpClient` keeps zero extra runtime packages beyond the PSR interfaces), so no third client API is required from integrators. Timeouts are configured on the PSR-18 client (REQ-RUNTIME-001). Tests: `tests/Unit/Psr18HttpClientTest.php`. |
 | PSR-11 Container | **N/A** | No container locator in the public API; constructor injection only. |
 | PSR-14 Event dispatcher | **N/A** | No domain event extension points that need a dispatcher SPI. |
 | PSR-15 HTTP middleware | **N/A** | Uses Symfony kernel listeners/subscribers (or has no HTTP middleware pipeline). |
@@ -34,10 +34,10 @@ Others are **N/A** (or already covered by Symfony) so the decision stays auditab
 
 ## Summary
 
-- **Adopted beyond baseline:** none (baseline PSR-12 + PSR-4 only).
+- **Adopted beyond baseline:** PSR-3 (optional logger on `Client` / `Session`), PSR-18 + PSR-17/PSR-7 (`Psr18HttpClient` transport adapter).
 - **Rule:** do not add `psr/*` Composer dependencies without matching type-hints and DI wiring.
 - **Re-evaluate** when the package gains logging, HTTP, cache, clock, or event SPIs.
 
 ---
 
-_REQ-CS-007 evaluation date: 2026-08-21._
+_REQ-CS-007 evaluation date: 2026-10-27._

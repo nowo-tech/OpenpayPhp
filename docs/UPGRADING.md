@@ -20,6 +20,18 @@
 
 ## Unreleased
 
+- New runtime requirements `psr/http-client`, `psr/http-factory` and `psr/http-message` (interfaces only; no behaviour change). `composer update nowo-tech/openpay-php` pulls them in.
+- Optional: send Openpay calls through your own PSR-18 client instead of the default cURL transport. Configure timeouts and TLS verification on that client (REQ-RUNTIME-001):
+
+```php
+use Nowo\Openpay\Http\Psr18HttpClient;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
+
+$psr18 = new Psr18Client(HttpClient::create(['timeout' => 30, 'max_duration' => 30]));
+$session = new Session($credentials, new Psr18HttpClient($psr18, $psr18, $psr18), $logger);
+```
+
 ## To 1.2.0
 
 From **1.1.4**:

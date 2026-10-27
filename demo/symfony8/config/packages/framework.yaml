@@ -2,6 +2,9 @@ framework:
     secret: '%env(APP_SECRET)%'
     http_method_override: false
     session: true
+    # REQ-TWIG-005: the demo form is a Symfony Form Type with CSRF protection.
+    form: true
+    csrf_protection: true
     php_errors:
         log: true
 

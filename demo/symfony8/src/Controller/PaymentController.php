@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\CustomerType;
 use Nowo\Openpay\Client;
 use Nowo\Openpay\Country;
 use Nowo\Openpay\Credentials;
@@ -12,6 +13,7 @@ use Nowo\Openpay\Http\HttpClient;
 use Nowo\Openpay\Http\HttpResponse;
 use Nowo\Openpay\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -57,18 +59,22 @@ final class PaymentController extends AbstractController
     #[Route('/', name: 'home', methods: ['GET'])]
     public function home(): Response
     {
-        $usingMock = ($_ENV['OPENPAY_MERCHANT_ID'] ?? '') === '' || ($_ENV['OPENPAY_PRIVATE_KEY'] ?? '') === '';
-
-        return $this->render('payment/home.html.twig', [
-            'usingMock' => $usingMock,
-        ]);
+        return $this->renderHome($this->createCustomerForm());
     }
 
     #[Route('/customers', name: 'customers_create', methods: ['POST'])]
     public function createCustomer(Request $request): Response
     {
-        $name = (string) $request->request->get('name', 'Demo');
-        $email = (string) $request->request->get('email', 'demo@example.test');
+        $form = $this->createCustomerForm();
+        $form->handleRequest($request);
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->renderHome($form, new Response(status: 422));
+        }
+
+        /** @var array{name: string, email: string} $data */
+        $data = $form->getData();
+        $name = $data['name'];
+        $email = $data['email'];
 
         try {
             $customer = $this->session($request->getClientIp())->run(static function (Client $client) use ($name, $email): array {
@@ -95,5 +101,24 @@ final class PaymentController extends AbstractController
             'title' => 'Customer created',
             'payload' => $customer,
         ]);
+    }
+
+    /** @return FormInterface<array{name: string, email: string}> */
+    private function createCustomerForm(): FormInterface
+    {
+        return $this->createForm(CustomerType::class, ['name' => 'Demo User', 'email' => 'demo@example.test'], [
+            'action' => $this->generateUrl('customers_create'),
+        ]);
+    }
+
+    /** @param FormInterface<array{name: string, email: string}> $form */
+    private function renderHome(FormInterface $form, ?Response $response = null): Response
+    {
+        $usingMock = ($_ENV['OPENPAY_MERCHANT_ID'] ?? '') === '' || ($_ENV['OPENPAY_PRIVATE_KEY'] ?? '') === '';
+
+        return $this->render('payment/home.html.twig', [
+            'usingMock' => $usingMock,
+            'form' => $form,
+        ], $response);
     }
 }
