@@ -166,14 +166,14 @@ final class SecurityHardeningTest extends TestCase
     public function testValidOpenpayIdsAreAccepted(): void
     {
         $http = new RecordingUrlHttpClient();
-        $client = new Client(new Credentials('mzdtln0bmtms6o3kck8f', 'sk'), $http);
+        $client = new Client(new Credentials('merchant1', 'sk'), $http);
 
-        $client->customerCards('a9pvykxz4g5rg0fplze0')->get('kqgykn96i7bcs1wwhvgw');
+        $client->customerCards('customer2')->get('card3');
         $client->customers->nested('cus_1-A', 'bank_accounts')->getList();
 
         self::assertSame([
-            'https://sandbox-api.openpay.mx/v1/mzdtln0bmtms6o3kck8f/customers/a9pvykxz4g5rg0fplze0/cards/kqgykn96i7bcs1wwhvgw',
-            'https://sandbox-api.openpay.mx/v1/mzdtln0bmtms6o3kck8f/customers/cus_1-A/bank_accounts',
+            'https://sandbox-api.openpay.mx/v1/merchant1/customers/customer2/cards/card3',
+            'https://sandbox-api.openpay.mx/v1/merchant1/customers/cus_1-A/bank_accounts',
         ], $http->urls);
     }
 

@@ -12,7 +12,7 @@ use Nowo\Openpay\Exception\OpenpayException;
  */
 final readonly class ResourceApi
 {
-    /** Openpay object ids are short alphanumeric strings (e.g. `trzjaozcik8msyqshka4`); `_` / `-` allowed for safety margin. */
+    /** Openpay object ids are short alphanumeric strings (20 lower-case letters and digits); `_` / `-` allowed for safety margin. */
     private const string ID_PATTERN = '/^[A-Za-z0-9_-]{1,64}$/D';
 
     /** Child resource names are lower-case path segments (`charges`, `cards`, `bank_accounts`, …). */
