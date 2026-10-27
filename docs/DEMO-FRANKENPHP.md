@@ -17,6 +17,8 @@ Worker-safe `Session` demo (`FRANKENPHP_MODE=worker` by default). The controller
 
 Requires Twig Inspector + Hot Reload in `require-dev` (REQ-DEMO-001).
 
+The "Create customer" form is a Symfony Form Type (`src/Form/CustomerType.php`, CSRF + validation) rendered with `form_start`, the `{% for child in form %}` + `{% if not child.rendered %}` + `form_row` loop and `form_end`. Do not reintroduce raw `<form>` / `<input>` / `<textarea>` / `<select>` in the demo Twig: `make check-no-raw-html-form` (part of `release-check`) fails on them (REQ-TWIG-005).
+
 Full worker audit: [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md).
 
 ## Start the demo in development

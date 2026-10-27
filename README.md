@@ -27,7 +27,7 @@ This bundle is **FrankenPHP worker mode friendly**.
 
 - Merchant resources: **charges**, **customers**, **cards**, **tokens**, **webhooks** (plus customer-scoped charges and cards).
 - Request-scoped `Credentials` / `Session` / `Client` — no static merchant state, safe in FrankenPHP workers.
-- Injectable `HttpClient` (default `CurlHttpClient` with connect/request timeouts and OS-store TLS).
+- Injectable `HttpClient` (default `CurlHttpClient` with connect/request timeouts and OS-store TLS), or any PSR-18 client through `Psr18HttpClient`.
 - Typed API errors (`OpenpayApiException` with HTTP status, error code, category, request id).
 - Countries: Mexico, Colombia, Peru (sandbox and production hosts).
 
@@ -100,7 +100,7 @@ make qa
 ```
 
 - Tests: PHPUnit (unit)
-- PHP: **100%** lines (131/131; gate ≥ 99% via `make release-check`, see [docs/COVERAGE.md](docs/COVERAGE.md))
+- PHP: **100%** lines (148/148; gate ≥ 99% via `make release-check`, see [docs/COVERAGE.md](docs/COVERAGE.md))
 - TS/JS: N/A
 - Python: N/A
 

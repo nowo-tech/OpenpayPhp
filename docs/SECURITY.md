@@ -28,6 +28,7 @@ A framework-agnostic PHP client for the Openpay REST API (charges, customers, ca
 | Resource ids (`get('…')`, `nested('…', …)`) | Application code (may come from user input) | URL-encoded with `rawurlencode()` before they are put in the path |
 | HTTP responses | Openpay API | Decoded with `json_decode()`; errors become `OpenpayApiException` |
 | `HttpClient` implementation | Application (optional) | Replaces the cURL transport; must keep TLS verification and timeouts |
+| PSR-18 client passed to `Psr18HttpClient` | Application (optional) | Same rules: TLS verification on, connect/total timeouts set on the client (the SDK cannot set them); transport errors become `OpenpayException` (message of the PSR-18 exception, no headers) |
 
 ## Threat model
 
@@ -62,7 +63,7 @@ Keep the private key in environment variables or a secrets vault, never in the r
 
 ## Dependencies
 
-Runtime requirements are only `ext-curl`, `ext-json` and `psr/log`. `composer audit` runs in CI; Dependabot proposes updates. Security fixes ship as patch releases of the supported minor (see [.github/SECURITY.md](../.github/SECURITY.md)).
+Runtime requirements are only `ext-curl`, `ext-json` and the PSR interface packages `psr/log`, `psr/http-client`, `psr/http-factory` and `psr/http-message`. `composer audit` runs in CI; Dependabot proposes updates. Security fixes ship as patch releases of the supported minor (see [.github/SECURITY.md](../.github/SECURITY.md)).
 
 ## Exposure and permissions
 

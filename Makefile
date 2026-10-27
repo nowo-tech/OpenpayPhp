@@ -1,7 +1,7 @@
 # Makefile for Openpay PHP SDK (Nowo fork)
 # REQ-MAKE-001 / REQ-MAKE-002 / REQ-MAKE-006 / REQ-MAKE-008 / REQ-MAKE-010
 
-.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history check-open-prs demo-smoke release-check-demos update-deps
+.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history check-open-prs check-no-raw-html-form demo-smoke release-check-demos update-deps
 
 COMPOSER_BIN := /usr/bin/composer
 COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
@@ -37,6 +37,7 @@ help:
 	@echo ""
 	@echo "Library-specific:"
 	@echo "  check-open-prs Fail if unresolved open GitHub PRs remain (REQ-REL-003)"
+	@echo "  check-no-raw-html-form Fail on raw <form>/<input>/<textarea>/<select> in demo Twig (REQ-TWIG-005)"
 	@echo "  demo-smoke    Boot demo/symfony8 and assert a final HTTP 200 (REQ-TEST-011)"
 	@echo "  setup-hooks   Install git hooks (REQ-GIT-001)"
 	@echo ""
@@ -117,6 +118,7 @@ release-check:
 	@$(MAKE) ensure-up
 	@$(MAKE) check-no-cursor-coauthor
 	@$(MAKE) check-open-prs
+	@$(MAKE) check-no-raw-html-form
 	@$(MAKE) composer-sync
 	@$(MAKE) cs-fix
 	@$(MAKE) cs-check
@@ -133,6 +135,13 @@ release-check-demos:
 check-open-prs:
 	@chmod +x .scripts/check-open-prs.sh
 	@bash .scripts/check-open-prs.sh
+
+# REQ-TWIG-005 — demo Twig must use Symfony Form Types (form_start / form_row / form_end), never raw HTML controls
+check-no-raw-html-form:
+	@if grep -rEn --include='*.twig' '<(form|input|textarea|select)[[:space:]>]' demo 2>/dev/null | grep -v '/vendor/'; then \
+		echo "REQ-TWIG-005: raw HTML form controls found in Twig (use a Form Type + form_start/form_row/form_end)."; exit 1; \
+	fi
+	@echo "REQ-TWIG-005: no raw <form>/<input>/<textarea>/<select> in Twig."
 
 # REQ-TEST-011 — boot the demo and assert a final HTTP 200
 demo-smoke:

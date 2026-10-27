@@ -57,6 +57,7 @@ Worker demo: `demo/symfony8` defaults to `FRANKENPHP_MODE=worker`. The demo cont
 | `Nowo\Openpay\Session` | if the app registers it | none; creates a new `Client` per `run()` / `client()` | ✅ | ✅ |
 | `Nowo\Openpay\Api\ResourceApi` | owned by `Client` | none; `nested()` / `add()` return or delegate without storing request data | ✅ | ✅ |
 | `Nowo\Openpay\Http\CurlHttpClient` | if the app registers it | none (`readonly` timeouts; handle is a local variable) | ✅ | ✅ |
+| `Nowo\Openpay\Http\Psr18HttpClient` | if the app registers it | none (`readonly` references to the injected PSR-18 client and PSR-17 factories; requests built per call) — the injected client must itself be worker-safe | ✅ | ✅ |
 
 `HttpResponse` is a `readonly` value object created per call, `Country` is an enum, `Version` only holds a constant, and `OpenpayException` is a plain exception.
 

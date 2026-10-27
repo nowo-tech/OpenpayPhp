@@ -27,6 +27,7 @@ Nested customer resources: `$client->customerCharges($id)`, `$client->customerCa
 
 - [Webhooks](#webhooks)
 - [Errors](#errors)
+- [PSR-18 transport](#psr-18-transport)
 - [FrankenPHP worker mode](#frankenphp-worker-mode)
 
 ## Webhooks
@@ -76,6 +77,21 @@ try {
 ```
 
 Other failures (invalid JSON, cURL errors, invalid credentials) throw `OpenpayException`.
+
+## PSR-18 transport
+
+Any PSR-18 client can carry the API calls instead of the default cURL transport (configure its timeouts and keep TLS verification on):
+
+```php
+use Nowo\Openpay\Http\Psr18HttpClient;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
+
+$psr18 = new Psr18Client(HttpClient::create(['timeout' => 30, 'max_duration' => 30]));
+$session = new Session($credentials, new Psr18HttpClient($psr18, $psr18, $psr18));
+```
+
+PSR-18 transport errors are rethrown as `OpenpayException`. See [CONFIGURATION.md](CONFIGURATION.md#psr-18-transport) and [PSR.md](PSR.md).
 
 ## FrankenPHP worker mode
 

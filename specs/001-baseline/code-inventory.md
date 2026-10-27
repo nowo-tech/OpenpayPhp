@@ -1,8 +1,8 @@
 # Code inventory — OpenpayPhp 1.1.4
 
 **Spec**: [`spec.md`](spec.md)  
-**Last audited**: 2026-10-20  
-**Production units**: 11 (every file tracked under `src/`; audit: `git ls-files src | wc -l`)
+**Last audited**: 2026-10-27  
+**Production units**: 12 (every file tracked under `src/`; audit: `git ls-files src | wc -l`)
 
 Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUDIT.md).
 
@@ -29,6 +29,7 @@ Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUD
 | `src/Http/HttpClient.php` | HTTP transport | FR-HTTP-001 |
 | `src/Http/HttpResponse.php` | HTTP transport | FR-HTTP-001 |
 | `src/Http/CurlHttpClient.php` | HTTP transport | FR-HTTP-002 |
+| `src/Http/Psr18HttpClient.php` | HTTP transport | FR-HTTP-003 |
 
 ## Errors
 
@@ -43,6 +44,6 @@ Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUD
 | --- | ---: | ---: |
 | Credentials and session | 3 | 3 |
 | Client and resources | 3 | 3 |
-| HTTP transport | 3 | 3 |
+| HTTP transport | 4 | 4 |
 | Errors | 2 | 2 |
-| **Total production files (`git ls-files src`)** | **11** | **11** |
+| **Total production files (`git ls-files src`)** | **12** | **12** |
