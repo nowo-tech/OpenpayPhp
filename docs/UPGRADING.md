@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Unreleased](#unreleased)
+- [To 1.3.0](#to-130)
 - [To 1.2.0](#to-120)
 - [To 1.1.4](#to-114)
 - [To 1.1.3](#to-113)
@@ -19,6 +20,14 @@
   - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
 
 ## Unreleased
+
+## To 1.3.0
+
+From **1.2.0**:
+
+```bash
+composer update nowo-tech/openpay-php
+```
 
 - **Stricter input validation (security hardening).** These now throw `OpenpayException` before any request: resource ids not matching `^[A-Za-z0-9_-]{1,64}$` (real Openpay ids always match), child resource names not matching `^[a-z_]+$`, a merchant id that is not alphanumeric, and a `publicIp` that is not a single IPv4/IPv6 address (e.g. a raw `X-Forwarded-For` list). Pass `Request::getClientIp()` with trusted proxies configured.
 - `OpenpayApiException::getMessage()` no longer contains the raw response body; it reads `Openpay API error HTTP 402 (error_code 3001, category card): The card was declined [request_id …]`. Use the structured properties (`errorCode`, `category`, `description`, `requestId`) instead of parsing the message; `responseBody` is capped at 64 KiB.

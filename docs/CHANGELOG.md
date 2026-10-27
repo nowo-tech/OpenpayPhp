@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.3.0] - 2026-10-27](#130---2026-10-27)
 - [[1.2.0] - 2026-10-22](#120---2026-10-22)
 - [[1.1.4] - 2026-10-13](#114---2026-10-13)
 - [[1.1.3] - 2026-10-09](#113---2026-10-09)
@@ -33,6 +34,10 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21)
 
 ## [Unreleased]
+
+## [1.3.0] - 2026-10-27
+
+PSR-18 transport, demo Form Type with CSRF; SEC-004 hardening: SensitiveParameter on secrets, strict id validation, capped error messages, credential/header validation, explicit cURL TLS; version check tooling See [UPGRADING](UPGRADING.md#to-130).
 
 ### Added
 
@@ -58,6 +63,8 @@ Hardening from the 2026-10-27 AI security re-audit (Pass (good) / Low; findings 
 
 - `docs/SECURITY.md`: PSR-18 redirect / exception-chain notes, trusted-proxy client IP, `zend.exception_ignore_args`, payments and webhooks (`hash_equals`, https-only URL, `order_id`, no blind retry), new "AI security audit" section; PSR-18 examples use `max_redirects: 0` (I2–I4).
 - `docs/PSR.md`: PSR-18 / PSR-17 adopted through `Psr18HttpClient`; summary updated (PSR-3 + PSR-18/PSR-17 adopted). CONFIGURATION, SECURITY, worker audit, USAGE and Spec Kit inventory list the PSR-18 transport.
+
+[1.3.0]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.3.0
 
 ## [1.2.0] - 2026-10-22
 
