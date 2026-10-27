@@ -13,8 +13,8 @@ use Psr\Http\Message\StreamFactoryInterface;
 /**
  * PSR-18 transport adapter (REQ-CS-007): plugs any PSR-18 client (Symfony Psr18Client, Guzzle, …) into the SDK.
  *
- * The SDK does not set timeouts on a PSR-18 client: configure connect/request timeouts and TLS verification on the
- * client you pass (REQ-RUNTIME-001), e.g. `new Psr18Client(HttpClient::create(['timeout' => 30]))`.
+ * The SDK does not set timeouts on a PSR-18 client: configure connect/request timeouts, TLS verification and no redirects on the
+ * client you pass (REQ-RUNTIME-001), e.g. `new Psr18Client(HttpClient::create(['timeout' => 30, 'max_redirects' => 0]))`.
  */
 final readonly class Psr18HttpClient implements HttpClient
 {
@@ -27,8 +27,14 @@ final readonly class Psr18HttpClient implements HttpClient
     }
 
     /** Sends one JSON request through the PSR-18 client; throws OpenpayException on transport failure. */
-    public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
-    {
+    public function request(
+        string $method,
+        string $url,
+        #[\SensitiveParameter]
+        ?string $jsonBody = null,
+        #[\SensitiveParameter]
+        array $headers = [],
+    ): HttpResponse {
         $methodUpper = strtoupper($method);
         $request = $this->requestFactory->createRequest('' === $methodUpper ? 'GET' : $methodUpper, $url)
             ->withHeader('Content-Type', 'application/json')

@@ -9,6 +9,7 @@ use Nowo\Openpay\Client;
 use Nowo\Openpay\Country;
 use Nowo\Openpay\Credentials;
 use Nowo\Openpay\Exception\OpenpayApiException;
+use Nowo\Openpay\Exception\OpenpayException;
 use Nowo\Openpay\Http\HttpClient;
 use Nowo\Openpay\Http\HttpResponse;
 use Nowo\Openpay\Session;
@@ -24,7 +25,9 @@ final class PaymentController extends AbstractController
     {
         $merchantId = (string) ($_ENV['OPENPAY_MERCHANT_ID'] ?? '');
         $privateKey = (string) ($_ENV['OPENPAY_PRIVATE_KEY'] ?? '');
-        $country = Country::tryFrom((string) ($_ENV['OPENPAY_COUNTRY'] ?? 'MX')) ?? Country::Mx;
+        $countryCode = (string) ($_ENV['OPENPAY_COUNTRY'] ?? 'MX');
+        // Unknown country is a configuration error, never a silent fallback to Mexico.
+        $country = Country::tryFrom($countryCode) ?? throw new OpenpayException(\sprintf('Unsupported OPENPAY_COUNTRY "%s" (expected MX, CO or PE).', $countryCode));
         $sandbox = (($_ENV['OPENPAY_SANDBOX'] ?? '1') !== '0');
         // New Credentials per call: publicIp must not live in a shared service under FrankenPHP worker.
         $hasKeys = '' !== $merchantId && '' !== $privateKey;
@@ -76,8 +79,11 @@ final class PaymentController extends AbstractController
         $name = $data['name'];
         $email = $data['email'];
 
+        // Configuration errors (unknown OPENPAY_COUNTRY, invalid IP) surface as a 500, not as a provider outage.
+        $session = $this->session($request->getClientIp());
+
         try {
-            $customer = $this->session($request->getClientIp())->run(static function (Client $client) use ($name, $email): array {
+            $customer = $session->run(static function (Client $client) use ($name, $email): array {
                 return $client->customers->create([
                     'name' => $name,
                     'email' => $email,
@@ -95,6 +101,12 @@ final class PaymentController extends AbstractController
                     'request_id' => $e->requestId,
                 ],
             ], new Response(status: $e->httpStatus >= 500 ? 502 : 422));
+        } catch (OpenpayException) {
+            // Transport failure / timeout: generic message, no transport details shown to the visitor.
+            return $this->render('payment/result.html.twig', [
+                'title' => 'Openpay unavailable',
+                'payload' => ['error' => 'The payment provider could not be reached. Try again later.'],
+            ], new Response(status: 502));
         }
 
         return $this->render('payment/result.html.twig', [

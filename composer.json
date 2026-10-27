@@ -88,7 +88,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "extra": {
-        "nowo-package-version": "1.1.4",
+        "nowo-package-version": "1.2.0",
         "branch-alias": {
             "dev-main": "1.0.x-dev"
         }

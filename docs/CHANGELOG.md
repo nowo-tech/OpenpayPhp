@@ -42,8 +42,21 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 - Demo: the "Create customer" form is now a Symfony Form Type (`App\Form\CustomerType`, CSRF + validation) rendered with `form_start` / child `form_row` loop / `form_end`; new `make check-no-raw-html-form` gate (part of `release-check`) fails on raw `<form>` / `<input>` / `<textarea>` / `<select>` in demo Twig (REQ-DEMO-001, REQ-TWIG-005).
 
+### Security
+
+Hardening from the 2026-10-27 AI security re-audit (Pass (good) / Low; findings L1–L4, I1–I7 — see [SECURITY.md](SECURITY.md#ai-security-audit)):
+
+- `#[\SensitiveParameter]` on every payload, JSON body and header parameter (`HttpClient` / `CurlHttpClient` / `Psr18HttpClient::request`, `Client::request`, `ResourceApi::create/add/update/refund`), so card data and the `Authorization` header never appear in stack-trace arguments (L1).
+- Resource ids must match `^[A-Za-z0-9_-]{1,64}$` and child resource names `^[a-z_]+$`; `''`, `.`, `..`, separators and control characters throw `OpenpayException` before any request (L2).
+- `OpenpayApiException` message is built from the sanitized structured fields (control characters stripped, 200-character cap) instead of the raw body; `responseBody` is capped at 64 KiB and documented as untrusted; API strings in log contexts are capped at 128 bytes (L3).
+- `Credentials` validates the merchant id (`^[A-Za-z0-9]+$`) and `publicIp` (`FILTER_VALIDATE_IP`); `CurlHttpClient` rejects CR / LF / NUL in header names and values (L4).
+- `CurlHttpClient` sets `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST=2`, `CURLOPT_FOLLOWLOCATION=false` and `CURLOPT_PROTOCOLS=CURLPROTO_HTTPS` explicitly (I1).
+- Demo: unknown `OPENPAY_COUNTRY` is a configuration error (no silent MX fallback), transport errors render a generic 502 page, the port is bound to `127.0.0.1` (I5, I6).
+- `Version::VERSION` / `extra.nowo-package-version` corrected to 1.2.0; new `make bump-version VERSION=X.Y.Z` and `make check-version` (in `release-check`), and `release.yml` fails when the tag does not match (I7).
+
 ### Documentation
 
+- `docs/SECURITY.md`: PSR-18 redirect / exception-chain notes, trusted-proxy client IP, `zend.exception_ignore_args`, payments and webhooks (`hash_equals`, https-only URL, `order_id`, no blind retry), new "AI security audit" section; PSR-18 examples use `max_redirects: 0` (I2–I4).
 - `docs/PSR.md`: PSR-18 / PSR-17 adopted through `Psr18HttpClient`; summary updated (PSR-3 + PSR-18/PSR-17 adopted). CONFIGURATION, SECURITY, worker audit, USAGE and Spec Kit inventory list the PSR-18 transport.
 
 ## [1.2.0] - 2026-10-22

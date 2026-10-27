@@ -16,11 +16,11 @@ See [SECURITY.md](SECURITY.md) and [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKE
 
 ## PSR-18 transport
 
-`Psr18HttpClient` adapts any PSR-18 client (Symfony `Psr18Client`, Guzzle, …) plus PSR-17 request/stream factories to the SDK `HttpClient` interface. The SDK cannot set timeouts on a PSR-18 client: configure connect/total timeouts (same hierarchy as above) and keep TLS peer/host verification enabled on the client you pass. A PSR-18 `ClientExceptionInterface` is rethrown as `OpenpayException`.
+`Psr18HttpClient` adapts any PSR-18 client (Symfony `Psr18Client`, Guzzle, …) plus PSR-17 request/stream factories to the SDK `HttpClient` interface. The SDK cannot set timeouts on a PSR-18 client: configure connect/total timeouts (same hierarchy as above) keep TLS peer/host verification enabled and disable redirects (`max_redirects: 0`, so the `Authorization` header is never replayed elsewhere) on the client you pass. A PSR-18 `ClientExceptionInterface` is rethrown as `OpenpayException`; its message may contain the request URL and the previous exception may hold the PSR-7 request with the `Authorization` header — see [SECURITY.md](SECURITY.md#attack-surface).
 
 ```php
 $psr18 = new Symfony\Component\HttpClient\Psr18Client(
-    Symfony\Component\HttpClient\HttpClient::create(['timeout' => 30, 'max_duration' => 30]),
+    Symfony\Component\HttpClient\HttpClient::create(['timeout' => 30, 'max_duration' => 30, 'max_redirects' => 0]),
 );
 $session = new Session($credentials, new Psr18HttpClient($psr18, $psr18, $psr18));
 ```

@@ -19,8 +19,14 @@ final readonly class CurlHttpClient implements HttpClient
     }
 
     /** Sends one JSON request; throws OpenpayException on transport failure or timeout. */
-    public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse
-    {
+    public function request(
+        string $method,
+        string $url,
+        #[\SensitiveParameter]
+        ?string $jsonBody = null,
+        #[\SensitiveParameter]
+        array $headers = [],
+    ): HttpResponse {
         $ch = curl_init($url);
         // @codeCoverageIgnoreStart
         if (false === $ch) {
@@ -30,6 +36,10 @@ final readonly class CurlHttpClient implements HttpClient
 
         $headerLines = ['Content-Type: application/json', 'Accept: application/json'];
         foreach ($headers as $name => $value) {
+            // Header injection guard: no CR / LF / NUL in names or values.
+            if (1 === preg_match('/[\r\n\0]/', $name.$value)) {
+                throw new OpenpayException('Invalid HTTP header: CR, LF and NUL are not allowed.');
+            }
             $headerLines[] = $name.': '.$value;
         }
 
@@ -46,6 +56,9 @@ final readonly class CurlHttpClient implements HttpClient
         curl_setopt($ch, \CURLOPT_HTTPHEADER, $headerLines);
         curl_setopt($ch, \CURLOPT_CONNECTTIMEOUT, $this->connectTimeoutSeconds);
         curl_setopt($ch, \CURLOPT_TIMEOUT, $this->timeoutSeconds);
+        foreach (self::securityOptions() as $option => $optionValue) {
+            curl_setopt($ch, $option, $optionValue);
+        }
         if (null !== $jsonBody) {
             curl_setopt($ch, \CURLOPT_POSTFIELDS, $jsonBody);
         }
@@ -61,6 +74,21 @@ final readonly class CurlHttpClient implements HttpClient
         $body = substr($raw, $headerSize);
 
         return new HttpResponse($status, $body, $this->parseHeaders($headerBlob));
+    }
+
+    /**
+     * TLS and redirect options set explicitly on every handle (not left to libcurl / php.ini defaults).
+     *
+     * @return array<int, int|bool>
+     */
+    public static function securityOptions(): array
+    {
+        return [
+            \CURLOPT_SSL_VERIFYPEER => true,
+            \CURLOPT_SSL_VERIFYHOST => 2,
+            \CURLOPT_FOLLOWLOCATION => false,
+            \CURLOPT_PROTOCOLS => \CURLPROTO_HTTPS,
+        ];
     }
 
     /** @return array<string, list<string>> */

@@ -9,5 +9,5 @@ namespace Nowo\Openpay;
  */
 final class Version
 {
-    public const string VERSION = '1.1.4';
+    public const string VERSION = '1.2.0';
 }
