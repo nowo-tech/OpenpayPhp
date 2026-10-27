@@ -76,7 +76,7 @@ try {
 }
 ```
 
-Other failures (invalid JSON, cURL errors, invalid credentials) throw `OpenpayException`.
+Other failures (invalid JSON, cURL errors, invalid credentials, ids that do not look like Openpay ids) throw `OpenpayException`. The `OpenpayApiException` message is built from the structured fields; `responseBody` is untrusted (never render it).
 
 ## PSR-18 transport
 
@@ -87,7 +87,7 @@ use Nowo\Openpay\Http\Psr18HttpClient;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
-$psr18 = new Psr18Client(HttpClient::create(['timeout' => 30, 'max_duration' => 30]));
+$psr18 = new Psr18Client(HttpClient::create(['timeout' => 30, 'max_duration' => 30, 'max_redirects' => 0]));
 $session = new Session($credentials, new Psr18HttpClient($psr18, $psr18, $psr18));
 ```
 

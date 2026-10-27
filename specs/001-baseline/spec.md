@@ -39,14 +39,14 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 
 ### Credentials and session (`FR-CRED-*`)
 
-- **FR-CRED-001**: `Credentials` is immutable and request-scoped (merchant id, private key marked `#[SensitiveParameter]`, `Country`, sandbox flag, client public IP); empty merchant id or key throws `OpenpayException`.
+- **FR-CRED-001**: `Credentials` is immutable and request-scoped (merchant id, private key marked `#[SensitiveParameter]`, `Country`, sandbox flag, client public IP); empty merchant id or key, a non-alphanumeric merchant id or an invalid public IP (`FILTER_VALIDATE_IP`) throws `OpenpayException`.
 - **FR-CRED-002**: `Country` selects sandbox / production API hosts for MX, CO and PE.
 - **FR-CRED-003**: `Session` builds a new `Client` per logical operation (`run()` / `client()`); no process-wide merchant statics.
 
 ### Client and resources (`FR-API-*`)
 
 - **FR-API-001**: `Client` exposes `charges`, `customers`, `cards`, `tokens`, `webhooks` and customer-scoped `customerCharges()` / `customerCards()`, and builds `{apiRoot}/{path}` requests with JSON bodies.
-- **FR-API-002**: `ResourceApi` provides `create` / `add`, `get`, `getList`, `update`, `delete`, `refund` and `nested()` relative to the merchant root.
+- **FR-API-002**: `ResourceApi` provides `create` / `add`, `get`, `getList`, `update`, `delete`, `refund` and `nested()` relative to the merchant root; ids must match `^[A-Za-z0-9_-]{1,64}$` and child resources `^[a-z_]+$`; payload parameters are `#[\SensitiveParameter]`.
 - **FR-API-003**: `Version::VERSION` identifies the library release.
 
 ### HTTP transport (`FR-HTTP-*`)
@@ -58,7 +58,7 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 ### Errors (`FR-ERR-*`)
 
 - **FR-ERR-001**: Transport and encoding failures raise `OpenpayException`.
-- **FR-ERR-002**: HTTP status ≥ 400 raises `OpenpayApiException` with status, error code, category, description, request id and raw body.
+- **FR-ERR-002**: HTTP status ≥ 400 raises `OpenpayApiException` with status, error code, category, description, request id and the raw body (capped at 64 KiB, untrusted); the message is built from the sanitized structured fields only.
 
 ### Runtime (`FR-RUN-*`)
 

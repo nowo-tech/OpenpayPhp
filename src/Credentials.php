@@ -11,7 +11,14 @@ use Nowo\Openpay\Exception\OpenpayException;
  */
 final readonly class Credentials
 {
-    /** Validates and holds the merchant credentials; the private key is a sensitive parameter (redacted in stack traces). */
+    /**
+     * Validates and holds the merchant credentials; the private key is a sensitive parameter (redacted in stack traces).
+     *
+     * @param string $publicIp end-user IP (Openpay anti-fraud); behind a proxy take it from
+     *                         `Request::getClientIp()` with `trusted_proxies` configured, never from a raw header
+     *
+     * @throws OpenpayException when a value is empty, the merchant id is not alphanumeric or the IP is invalid
+     */
     public function __construct(
         private string $merchantId,
         #[\SensitiveParameter]
@@ -22,6 +29,14 @@ final readonly class Credentials
     ) {
         if ('' === $this->merchantId || '' === $this->privateKey) {
             throw new OpenpayException('Merchant id and private key are required.');
+        }
+        // The merchant id is part of every URL path: Openpay merchant ids are alphanumeric.
+        if (1 !== preg_match('/^[A-Za-z0-9]+$/D', $this->merchantId)) {
+            throw new OpenpayException('Invalid Openpay merchant id: expected letters and digits only.');
+        }
+        // Sent as X-Forwarded-For: must be a single IPv4/IPv6 address (no lists, no CR/LF).
+        if (false === filter_var($this->publicIp, \FILTER_VALIDATE_IP)) {
+            throw new OpenpayException('Invalid public IP: expected a single IPv4 or IPv6 address.');
         }
     }
 

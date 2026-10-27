@@ -10,7 +10,17 @@ namespace Nowo\Openpay\Http;
 interface HttpClient
 {
     /**
+     * Implementations must mark `$jsonBody` and `$headers` as `#[\SensitiveParameter]` too: they carry card data and
+     * the `Authorization` header (attributes are not inherited).
+     *
      * @param array<string, string> $headers
      */
-    public function request(string $method, string $url, ?string $jsonBody = null, array $headers = []): HttpResponse;
+    public function request(
+        string $method,
+        string $url,
+        #[\SensitiveParameter]
+        ?string $jsonBody = null,
+        #[\SensitiveParameter]
+        array $headers = [],
+    ): HttpResponse;
 }

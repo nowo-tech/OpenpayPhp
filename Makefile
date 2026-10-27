@@ -1,7 +1,7 @@
 # Makefile for Openpay PHP SDK (Nowo fork)
 # REQ-MAKE-001 / REQ-MAKE-002 / REQ-MAKE-006 / REQ-MAKE-008 / REQ-MAKE-010
 
-.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history check-open-prs check-no-raw-html-form demo-smoke release-check-demos update-deps
+.PHONY: help ensure-up up down down-dev build shell install assets test test-coverage cs-check cs-fix rector rector-dry phpstan igor qa release-check composer-sync clean update validate setup-hooks check-no-cursor-coauthor strip-cursor-coauthor-from-history check-open-prs check-no-raw-html-form check-version bump-version demo-smoke release-check-demos update-deps
 
 COMPOSER_BIN := /usr/bin/composer
 COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
@@ -37,6 +37,8 @@ help:
 	@echo ""
 	@echo "Library-specific:"
 	@echo "  check-open-prs Fail if unresolved open GitHub PRs remain (REQ-REL-003)"
+	@echo "  check-version Fail if src/Version.php, composer extra.nowo-package-version and the release tag disagree"
+	@echo "  bump-version  Set Version::VERSION + extra.nowo-package-version (make bump-version VERSION=X.Y.Z)"
 	@echo "  check-no-raw-html-form Fail on raw <form>/<input>/<textarea>/<select> in demo Twig (REQ-TWIG-005)"
 	@echo "  demo-smoke    Boot demo/symfony8 and assert a final HTTP 200 (REQ-TEST-011)"
 	@echo "  setup-hooks   Install git hooks (REQ-GIT-001)"
@@ -119,6 +121,7 @@ release-check:
 	@$(MAKE) check-no-cursor-coauthor
 	@$(MAKE) check-open-prs
 	@$(MAKE) check-no-raw-html-form
+	@$(MAKE) check-version
 	@$(MAKE) composer-sync
 	@$(MAKE) cs-fix
 	@$(MAKE) cs-check
@@ -142,6 +145,16 @@ check-no-raw-html-form:
 		echo "REQ-TWIG-005: raw HTML form controls found in Twig (use a Form Type + form_start/form_row/form_end)."; exit 1; \
 	fi
 	@echo "REQ-TWIG-005: no raw <form>/<input>/<textarea>/<select> in Twig."
+
+# Release version gate (src/Version.php = composer extra = tag); bump both in the release commit
+check-version:
+	@bash .scripts/check-version.sh
+
+bump-version:
+	@echo "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "Usage: make bump-version VERSION=X.Y.Z"; exit 1; }
+	@sed -i.bak -E "s/(const string VERSION = ')[^']*'/\1$(VERSION)'/" src/Version.php && rm -f src/Version.php.bak
+	@sed -i.bak -E 's/("nowo-package-version": ")[^"]*"/\1$(VERSION)"/' composer.json && rm -f composer.json.bak
+	@bash .scripts/check-version.sh v$(VERSION)
 
 # REQ-TEST-011 — boot the demo and assert a final HTTP 200
 demo-smoke:

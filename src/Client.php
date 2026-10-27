@@ -18,6 +18,9 @@ use Psr\Log\LoggerInterface;
  */
 final readonly class Client
 {
+    /** Maximum bytes of an API-provided string (category, request id) copied into a log context. */
+    private const int MAX_LOG_VALUE_LENGTH = 128;
+
     public ResourceApi $charges;
     public ResourceApi $customers;
     public ResourceApi $cards;
@@ -68,7 +71,7 @@ final readonly class Client
      * @throws OpenpayApiException when the API answers with HTTP >= 400 (error_code, category, request_id decoded)
      * @throws OpenpayException    when the response is not valid JSON
      */
-    public function request(string $method, string $relativePath, ?array $payload = null): array
+    public function request(string $method, string $relativePath, #[\SensitiveParameter] ?array $payload = null): array
     {
         $url = $this->credentials->apiRoot().'/'.ltrim($relativePath, '/');
         $body = null;
@@ -101,8 +104,8 @@ final readonly class Client
             $this->logger?->warning('Openpay API returned an error.', $context + [
                 'status' => $response->statusCode,
                 'error_code' => $error->errorCode,
-                'category' => $error->category,
-                'request_id' => $error->requestId,
+                'category' => $this->logValue($error->category),
+                'request_id' => $this->logValue($error->requestId),
             ]);
 
             throw $error;
@@ -120,5 +123,15 @@ final readonly class Client
 
         /* @var array<string, mixed> $decoded */
         return $decoded;
+    }
+
+    /** Caps an untrusted API string before it goes into a log context (REQ-OBS-001). */
+    private function logValue(?string $value): ?string
+    {
+        if (null === $value || \strlen($value) <= self::MAX_LOG_VALUE_LENGTH) {
+            return $value;
+        }
+
+        return substr($value, 0, self::MAX_LOG_VALUE_LENGTH).'…';
     }
 }

@@ -2,7 +2,7 @@
 
 This checklist helps maintainers prepare and publish a release safely.
 
-> Current release: **1.1.4** (tag `v1.1.4`), MIT clean-room `Nowo\Openpay\`.
+> Current release: **1.2.0** (tag `v1.2.0`), MIT clean-room `Nowo\Openpay\`.
 > Tags must match `v*` so `.github/workflows/release.yml` creates the GitHub Release.
 
 The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags are not on this VCS; Packagist cannot install them. Do not retag 3.x onto `main` (wrong API). Restore them only from fork commits (`master` / `OpenpayPhp-fork-archive`).
@@ -22,7 +22,7 @@ The 3.x Apache fork (`3.1.1.1`, `3.2.0`, `v3.2.1`) is **historical**. Those tags
 - [ ] After the release commit and **before** `git push`, run `make check-no-cursor-coauthor` again (REQ-GIT-001)
 - [ ] Update [docs/CHANGELOG.md](CHANGELOG.md): move `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`
 - [ ] Update [docs/UPGRADING.md](UPGRADING.md) if the public API changed
-- [ ] Bump `Nowo\Openpay\Version::VERSION` in `src/Version.php` and `extra.nowo-package-version` in `composer.json` to the tag being released (`tests/Unit/VersionTest.php` fails if they differ)
+- [ ] `make bump-version VERSION=X.Y.Z` in the release commit: sets `Nowo\Openpay\Version::VERSION` (`src/Version.php`) and `extra.nowo-package-version` (`composer.json`) to the tag being released. `tests/Unit/VersionTest.php` fails if they differ, `make check-version` (part of `release-check`) fails if they are older than the latest tag or differ from the tag on `HEAD`, and `release.yml` fails if they differ from the pushed tag
 - [ ] Confirm [docs/FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md) matches the tagged revision
 
 ## Tag and publish
