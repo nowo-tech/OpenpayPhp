@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Unreleased](#unreleased)
+- [To 1.4.0](#to-140)
 - [To 1.3.0](#to-130)
 - [To 1.2.0](#to-120)
 - [To 1.1.4](#to-114)
@@ -20,6 +21,14 @@
   - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
 
 ## Unreleased
+
+## To 1.4.0
+
+From **1.3.0**:
+
+```bash
+composer update nowo-tech/openpay-php
+```
 
 Target **1.4.0**. No breaking change and no action required.
 

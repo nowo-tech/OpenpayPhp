@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.4.0] - 2026-11-12](#140---2026-11-12)
 - [[1.3.0] - 2026-10-27](#130---2026-10-27)
 - [[1.2.0] - 2026-10-22](#120---2026-10-22)
 - [[1.1.4] - 2026-10-13](#114---2026-10-13)
@@ -34,6 +35,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21)
 
 ## [Unreleased]
+
+## [1.4.0] - 2026-11-12
 
 Target: **1.4.0** (minor: new public API; no breaking change).
 
@@ -52,6 +55,8 @@ Target: **1.4.0** (minor: new public API; no breaking change).
 - REQ-RUNTIME-002 worker test: `SharedClientWorkerTest` sends 2,000 calls through one shared client alternating two
   end-user IPs (IPv4 / IPv6) and checks each call's `X-Forwarded-For`, that the shared client keeps its own IP, and
   flat memory. Worker audit, USAGE and CONFIGURATION document the shared-client pattern.
+
+[1.4.0]: https://github.com/nowo-tech/OpenpayPhp/releases/tag/v1.4.0
 
 ## [1.3.0] - 2026-10-27
 
