@@ -54,7 +54,8 @@ final readonly class Client
     /**
      * Returns a client for one end user's IP (sent as X-Forwarded-For), sharing this client's merchant credentials,
      * transport and logger. This client is unchanged, so one shared client (e.g. a service kept alive by a FrankenPHP
-     * worker) can serve every request: `$client->withPublicIp($request->getClientIp())->charges->create(...)`.
+     * worker) can serve every request:
+     * `$client->withPublicIp($request->getClientIp() ?? '127.0.0.1')->charges->create(...)`.
      *
      * @param string $publicIp end-user IP; behind a proxy take it from `Request::getClientIp()` with
      *                         `trusted_proxies` configured, never from a raw header

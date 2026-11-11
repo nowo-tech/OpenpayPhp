@@ -21,7 +21,7 @@
 
 ## Unreleased
 
-Target **1.3.1**. No breaking change and no action required.
+Target **1.4.0**. No breaking change and no action required.
 
 - Optional: if you build a new `Credentials` per request only to pass the end-user IP, you can keep one shared `Client`
   service and call `$client->withPublicIp($request->getClientIp() ?? '127.0.0.1')` per request instead. The shared

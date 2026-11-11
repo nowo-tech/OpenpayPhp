@@ -6,7 +6,7 @@
 | HTTP | Inject `HttpClient`; default `CurlHttpClient(5, 30)`; `Psr18HttpClient($psr18Client, $requestFactory, $streamFactory)` for any PSR-18 client |
 | Worker | Use `Session::run()` once per request — do not reuse static credentials or a shared `Credentials` built from request data |
 
-Under FrankenPHP worker mode with the kernel **not** reset, a shared `Credentials` / `Client` is safe only for values identical on every request (fixed merchant). For the per-request end-user IP use `$client->withPublicIp($ip)` (1.3.1+; an immutable copy per call). Multi-tenant merchants need a new `Credentials` each request.
+Under FrankenPHP worker mode with the kernel **not** reset, a shared `Credentials` / `Client` is safe only for values identical on every request (fixed merchant). For the per-request end-user IP use `$client->withPublicIp($ip)` (1.4.0+; an immutable copy per call). Multi-tenant merchants need a new `Credentials` each request.
 
 See [SECURITY.md](SECURITY.md) and [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md).
 

@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | Package | `nowo-tech/openpay-php` (`library`, framework-agnostic SDK, no Symfony bundle / DI extension) |
-| Audited revision | `v1.3.1` (first audit `v1.1.1`) |
+| Audited revision | `v1.4.0` (first audit `v1.1.1`) |
 | Audit date | 2026-09-24, refreshed 2026-11-12 (REQ-RUNTIME-002) |
 | Worker test | [`SharedClientWorkerTest`](#worker-test-req-runtime-002): one shared client, 2,000 calls alternating two end-user IPs |
 | Method | Manual review of every file under `src/` + PHPStan classic / **worker-strict** rulesets + demo controller review |
@@ -83,7 +83,7 @@ Worker demo: `demo/symfony8` defaults to `FRANKENPHP_MODE=worker`. The demo cont
 - **Worker impact:** no state leaks inside the library, but a host that kept one shared `Client` (the natural Symfony
   service) sent the same IP for every end user, so Openpay's anti-fraud saw one IP for all of them; the only correct
   pattern was a new `Credentials` per request.
-- **Status:** Resolved in 1.3.1 — `Client::withPublicIp()` / `Credentials::withPublicIp()` return an immutable copy
+- **Status:** Resolved in 1.4.0 — `Client::withPublicIp()` / `Credentials::withPublicIp()` return an immutable copy
   per call; the shared instance never changes. Test: `SharedClientWorkerTest`.
 
 No other findings. **Scenario B (kernel never reset) is safe** when integrators follow the usage recommendations below.
@@ -91,7 +91,7 @@ No other findings. **Scenario B (kernel never reset) is safe** when integrators 
 ## Usage recommendations in worker mode
 
 - A shared `Client` or `Credentials` service is safe for values identical on every request (fixed merchant). Pass the
-  end-user IP per call: `$client->withPublicIp($request->getClientIp())` (W-02).
+  end-user IP per call: `$client->withPublicIp($request->getClientIp() ?? '127.0.0.1')` (W-02).
 - Do not build a shared `Credentials` / `Client` from request data (`publicIp`, tenant merchant). For per-tenant
   merchants build a new `Credentials` + `Session` per request.
 - Prefer `Session::run()` once per logical HTTP request.
