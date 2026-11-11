@@ -70,6 +70,17 @@ final readonly class Credentials
         return $this->publicIp;
     }
 
+    /**
+     * Returns a copy for another end-user IP; this instance is unchanged (immutable, safe to share across worker
+     * requests).
+     *
+     * @throws OpenpayException when the IP is not a single IPv4 or IPv6 address
+     */
+    public function withPublicIp(string $publicIp): self
+    {
+        return new self($this->merchantId, $this->privateKey, $this->country, $this->sandbox, $publicIp);
+    }
+
     /** Sandbox or production base URL for the configured country. */
     public function baseUrl(): string
     {

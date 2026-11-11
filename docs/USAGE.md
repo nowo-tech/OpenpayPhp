@@ -97,8 +97,15 @@ PSR-18 transport errors are rethrown as `OpenpayException`. See [CONFIGURATION.m
 
 When the kernel is **not** reset between requests:
 
-1. Build a new `Credentials` + `Session` per HTTP request (especially if `publicIp` or merchant credentials vary by request/tenant).
-2. Prefer `Session::run()` so the `Client` does not outlive the request.
+1. A shared `Client` service (fixed merchant) is fine: pass each request's end-user IP per call with
+   `withPublicIp()`, which returns a new client and leaves the shared one unchanged:
+
+   ```php
+   $client->withPublicIp($request->getClientIp() ?? '127.0.0.1')->charges->create($payload);
+   ```
+
+2. When merchant credentials vary by request / tenant, build a new `Credentials` + `Session` per HTTP request, and
+   prefer `Session::run()` so the `Client` does not outlive the request.
 3. Do not register a shared `Credentials` service filled from the first request’s data.
 
 See [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md) and [CONFIGURATION.md](CONFIGURATION.md).

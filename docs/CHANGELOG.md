@@ -35,6 +35,23 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+Target: **1.3.1** (patch, additive; no breaking change).
+
+### Added
+
+- `Client::withPublicIp(string $publicIp)` and `Credentials::withPublicIp(string $publicIp)`: an immutable copy for one
+  end user's IP (sent as `X-Forwarded-For` for Openpay anti-fraud), sharing the merchant credentials, transport and
+  logger. One shared `Client` service (for example kept alive by a FrankenPHP worker) can now serve every request with
+  that request's end-user IP: `$client->withPublicIp($request->getClientIp())->charges->create(...)`. Until now the IP
+  could only be set through the `Credentials` constructor, so a shared client sent the same IP for every end user
+  unless the host built new `Credentials` per request (REQ-RUNTIME-002). The invalid-IP check is the constructor's.
+
+### Changed
+
+- REQ-RUNTIME-002 worker test: `SharedClientWorkerTest` sends 2,000 calls through one shared client alternating two
+  end-user IPs (IPv4 / IPv6) and checks each call's `X-Forwarded-For`, that the shared client keeps its own IP, and
+  flat memory. Worker audit, USAGE and CONFIGURATION document the shared-client pattern.
+
 ## [1.3.0] - 2026-10-27
 
 PSR-18 transport, demo Form Type with CSRF; SEC-004 hardening: SensitiveParameter on secrets, strict id validation, capped error messages, credential/header validation, explicit cURL TLS; version check tooling See [UPGRADING](UPGRADING.md#to-130).
