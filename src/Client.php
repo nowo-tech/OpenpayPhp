@@ -51,6 +51,22 @@ final readonly class Client
         return $this->credentials;
     }
 
+    /**
+     * Returns a client for one end user's IP (sent as X-Forwarded-For), sharing this client's merchant credentials,
+     * transport and logger. This client is unchanged, so one shared client (e.g. a service kept alive by a FrankenPHP
+     * worker) can serve every request:
+     * `$client->withPublicIp($request->getClientIp() ?? '127.0.0.1')->charges->create(...)`.
+     *
+     * @param string $publicIp end-user IP; behind a proxy take it from `Request::getClientIp()` with
+     *                         `trusted_proxies` configured, never from a raw header
+     *
+     * @throws OpenpayException when the IP is not a single IPv4 or IPv6 address
+     */
+    public function withPublicIp(string $publicIp): self
+    {
+        return new self($this->credentials->withPublicIp($publicIp), $this->http, $this->logger);
+    }
+
     /** Charges of one customer (customers/{id}/charges). */
     public function customerCharges(string $customerId): ResourceApi
     {
