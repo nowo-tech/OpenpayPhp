@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d24bffabf6f13f12c5cc801a3c5799f6",
+    "content-hash": "d3fd69e80b59b49f336b3df527bd1a4e",
     "packages": [
         {
             "name": "psr/http-client",
