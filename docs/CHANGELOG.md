@@ -49,6 +49,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 > **Note:** v1.6.0 has **no GitHub release**: its release workflow failed the version gate (`.scripts/check-version.sh`), because the version constant and `extra.nowo-package-version` still said `1.4.0`. The tag exists and Packagist serves it, and its code is correct; it only misreports its version (see 1.6.1). Use 1.6.1 or later.
 
+This is the first release with real changes since 1.4.0 (1.5.0 is the same code as 1.4.0): everything below is new relative to 1.4.0.
+
 ### Added
 
 - `Api\ChargesApiInterface` (`create()`, `get()`, `getList()`, `refund()`), implemented by `ResourceApi` (REQ-ARCH-001 rule 1). `Client::$charges` and `Client::customerCharges()` satisfy it; type-hint it to fake charges in tests.
@@ -56,7 +58,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [1.5.0]
 
-Tag only. v1.5.0 was cut with the 1.4.0 content, has no GitHub release and no changelog entry of its own; see 1.4.0 for what that code contains.
+v1.5.0 points at the same commit as v1.4.0 (`d634cfe`), carries **no code change of its own** and has no GitHub release. `^1.5` is byte-identical to 1.4.0; see 1.4.0 for what that code contains.
 
 ## [1.4.0] - 2026-11-12
 
