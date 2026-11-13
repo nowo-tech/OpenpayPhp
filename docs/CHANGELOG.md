@@ -19,6 +19,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.6.0] - 2026-11-13](#160---2026-11-13)
 - [[1.4.0] - 2026-11-12](#140---2026-11-12)
 - [[1.3.0] - 2026-10-27](#130---2026-10-27)
 - [[1.2.0] - 2026-10-22](#120---2026-10-22)
@@ -35,6 +36,8 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 - [[3.1.1.1] - 2026-08-21](#3111---2026-08-21)
 
 ## [Unreleased]
+
+## [1.6.0] - 2026-11-13
 
 ### Added
 
