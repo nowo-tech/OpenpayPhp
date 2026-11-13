@@ -4,7 +4,6 @@
 
 - [Unreleased](#unreleased)
 - [To 1.6.0](#to-160)
-- [To 1.6.0](#to-160-1)
 - [To 1.4.0](#to-140)
 - [To 1.3.0](#to-130)
 - [To 1.2.0](#to-120)
@@ -23,14 +22,6 @@
   - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
 
 ## Unreleased
-
-## To 1.6.0
-
-From **1.5.0**:
-
-```bash
-composer update nowo-tech/openpay-php
-```
 
 ## To 1.6.0
 
