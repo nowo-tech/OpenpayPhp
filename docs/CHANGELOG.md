@@ -36,6 +36,11 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Added
+
+- `Api\ChargesApiInterface` (`create()`, `get()`, `getList()`, `refund()`), implemented by `ResourceApi` (REQ-ARCH-001 rule 1). `Client::$charges` and `Client::customerCharges()` satisfy it; type-hint it to fake charges in tests.
+- Typed exceptions, all extending `OpenpayException` (existing `catch` blocks keep working): `OpenpayTransportException` (cURL / PSR-18 failure), `OpenpayConfigurationException` (credentials, end-user IP), `OpenpayInvalidRequestException` (bad id, bad resource name, `refund()` outside charges, unencodable payload), `OpenpayInvalidResponseException` (body not JSON).
+
 ## [1.4.0] - 2026-11-12
 
 Target: **1.4.0** (minor: new public API; no breaking change).

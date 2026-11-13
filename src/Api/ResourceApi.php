@@ -6,11 +6,14 @@ namespace Nowo\Openpay\Api;
 
 use Nowo\Openpay\Client;
 use Nowo\Openpay\Exception\OpenpayException;
+use Nowo\Openpay\Exception\OpenpayInvalidRequestException;
 
 /**
  * Thin REST resource helper (path relative to merchant root).
+ *
+ * Bound to a charges path it is the {@see ChargesApiInterface} implementation; refund() only works there.
  */
-final readonly class ResourceApi
+final readonly class ResourceApi implements ChargesApiInterface
 {
     /** Openpay object ids are short alphanumeric strings (20 lower-case letters and digits); `_` / `-` allowed for safety margin. */
     private const string ID_PATTERN = '/^[A-Za-z0-9_-]{1,64}$/D';
@@ -93,7 +96,7 @@ final readonly class ResourceApi
     {
         // Only "charges" or ".../{id}/charges"; an id that merely contains "charges" must not pass.
         if ('charges' !== $this->resourcePath && !str_ends_with($this->resourcePath, '/charges')) {
-            throw new OpenpayException('refund() is only available on charges resources.');
+            throw new OpenpayInvalidRequestException('refund() is only available on charges resources.');
         }
 
         return $this->client->request(
@@ -107,7 +110,7 @@ final readonly class ResourceApi
     public function nested(string $parentId, string $childResource): self
     {
         if (1 !== preg_match(self::RESOURCE_PATTERN, $childResource)) {
-            throw new OpenpayException('Invalid Openpay child resource name.');
+            throw new OpenpayInvalidRequestException('Invalid Openpay child resource name.');
         }
 
         return new self(
@@ -124,7 +127,7 @@ final readonly class ResourceApi
     private function id(string $id): string
     {
         if (1 !== preg_match(self::ID_PATTERN, $id)) {
-            throw new OpenpayException('Invalid Openpay id: expected 1-64 characters [A-Za-z0-9_-].');
+            throw new OpenpayInvalidRequestException('Invalid Openpay id: expected 1-64 characters [A-Za-z0-9_-].');
         }
 
         return $id;

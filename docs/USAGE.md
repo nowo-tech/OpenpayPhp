@@ -76,7 +76,11 @@ try {
 }
 ```
 
-Other failures (invalid JSON, cURL errors, invalid credentials, ids that do not look like Openpay ids) throw `OpenpayException`. The `OpenpayApiException` message is built from the structured fields; `responseBody` is untrusted (never render it).
+Other failures throw a subclass of `OpenpayException`: `OpenpayTransportException` (cURL / PSR-18 errors, timeouts), `OpenpayConfigurationException` (invalid credentials or IP), `OpenpayInvalidRequestException` (ids that do not look like Openpay ids, bad resource names, `refund()` outside charges) and `OpenpayInvalidResponseException` (invalid JSON). Catching `OpenpayException` still covers all of them.
+
+## Charges interface
+
+Services that only deal with charges can depend on `Nowo\Openpay\Api\ChargesApiInterface` (`create()`, `get()`, `getList()`, `refund()`). `$client->charges` and `$client->customerCharges($id)` implement it, and a test can pass any fake. The interface and the library stay free of framework types; a Symfony bundle or a DDD host wires it in its own container. The `OpenpayApiException` message is built from the structured fields; `responseBody` is untrusted (never render it).
 
 ## PSR-18 transport
 

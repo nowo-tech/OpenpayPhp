@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nowo\Openpay\Http;
 
 use Nowo\Openpay\Exception\OpenpayException;
+use Nowo\Openpay\Exception\OpenpayTransportException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -49,7 +50,7 @@ final readonly class Psr18HttpClient implements HttpClient
         try {
             $response = $this->client->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
-            throw new OpenpayException('Openpay HTTP request failed: '.$e->getMessage(), 0, $e);
+            throw new OpenpayTransportException('Openpay HTTP request failed: '.$e->getMessage(), 0, $e);
         }
 
         $responseHeaders = [];
