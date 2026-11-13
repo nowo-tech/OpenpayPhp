@@ -19,7 +19,9 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.6.1] - 2026-11-13](#161---2026-11-13)
 - [[1.6.0] - 2026-11-13](#160---2026-11-13)
+- [[1.5.0]](#150)
 - [[1.4.0] - 2026-11-12](#140---2026-11-12)
 - [[1.3.0] - 2026-10-27](#130---2026-10-27)
 - [[1.2.0] - 2026-10-22](#120---2026-10-22)
@@ -37,12 +39,24 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-11-13
+
+### Fixed
+
+- `Version::VERSION` and `composer.json` `extra.nowo-package-version` were left at `1.4.0` in 1.6.0, so that release reported the wrong version in its `User-Agent`. 1.6.1 sets both to the release version. No library code, interface or behaviour changed.
+
 ## [1.6.0] - 2026-11-13
+
+> **Note:** v1.6.0 has **no GitHub release**: its release workflow failed the version gate (`.scripts/check-version.sh`), because the version constant and `extra.nowo-package-version` still said `1.4.0`. The tag exists and Packagist serves it, and its code is correct; it only misreports its version (see 1.6.1). Use 1.6.1 or later.
 
 ### Added
 
 - `Api\ChargesApiInterface` (`create()`, `get()`, `getList()`, `refund()`), implemented by `ResourceApi` (REQ-ARCH-001 rule 1). `Client::$charges` and `Client::customerCharges()` satisfy it; type-hint it to fake charges in tests.
 - Typed exceptions, all extending `OpenpayException` (existing `catch` blocks keep working): `OpenpayTransportException` (cURL / PSR-18 failure), `OpenpayConfigurationException` (credentials, end-user IP), `OpenpayInvalidRequestException` (bad id, bad resource name, `refund()` outside charges, unencodable payload), `OpenpayInvalidResponseException` (body not JSON).
+
+## [1.5.0]
+
+Tag only. v1.5.0 was cut with the 1.4.0 content, has no GitHub release and no changelog entry of its own; see 1.4.0 for what that code contains.
 
 ## [1.4.0] - 2026-11-12
 
