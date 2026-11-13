@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nowo\Openpay;
 
+use Nowo\Openpay\Exception\OpenpayConfigurationException;
 use Nowo\Openpay\Exception\OpenpayException;
 
 /**
@@ -28,15 +29,15 @@ final readonly class Credentials
         private string $publicIp = '127.0.0.1',
     ) {
         if ('' === $this->merchantId || '' === $this->privateKey) {
-            throw new OpenpayException('Merchant id and private key are required.');
+            throw new OpenpayConfigurationException('Merchant id and private key are required.');
         }
         // The merchant id is part of every URL path: Openpay merchant ids are alphanumeric.
         if (1 !== preg_match('/^[A-Za-z0-9]+$/D', $this->merchantId)) {
-            throw new OpenpayException('Invalid Openpay merchant id: expected letters and digits only.');
+            throw new OpenpayConfigurationException('Invalid Openpay merchant id: expected letters and digits only.');
         }
         // Sent as X-Forwarded-For: must be a single IPv4/IPv6 address (no lists, no CR/LF).
         if (false === filter_var($this->publicIp, \FILTER_VALIDATE_IP)) {
-            throw new OpenpayException('Invalid public IP: expected a single IPv4 or IPv6 address.');
+            throw new OpenpayConfigurationException('Invalid public IP: expected a single IPv4 or IPv6 address.');
         }
     }
 

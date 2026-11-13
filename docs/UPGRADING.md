@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Unreleased](#unreleased)
+- [To 1.5.0](#to-150)
 - [To 1.4.0](#to-140)
 - [To 1.3.0](#to-130)
 - [To 1.2.0](#to-120)
@@ -21,6 +22,19 @@
   - [`reset()` no longer reads `OPENPAY_*`](#reset-no-longer-reads-openpay_)
 
 ## Unreleased
+
+## To 1.5.0
+
+From **1.4.0**:
+
+```bash
+composer update nowo-tech/openpay-php
+```
+
+Minor, strictly additive; no action required. The library stays framework-free.
+
+- New `Nowo\Openpay\Api\ChargesApiInterface`, implemented by `ResourceApi`. Type-hint it in services that only create, read, list or refund charges.
+- Failures that were thrown as a plain `OpenpayException` are now typed subclasses of it: `OpenpayTransportException`, `OpenpayConfigurationException`, `OpenpayInvalidRequestException`, `OpenpayInvalidResponseException`. Catching `OpenpayException` still works; catch a subclass to react differently (for example retry only on `OpenpayTransportException`). Messages are unchanged. Log contexts that record `$e::class` now show the subclass.
 
 ## To 1.4.0
 

@@ -7,6 +7,8 @@ namespace Nowo\Openpay;
 use Nowo\Openpay\Api\ResourceApi;
 use Nowo\Openpay\Exception\OpenpayApiException;
 use Nowo\Openpay\Exception\OpenpayException;
+use Nowo\Openpay\Exception\OpenpayInvalidRequestException;
+use Nowo\Openpay\Exception\OpenpayInvalidResponseException;
 use Nowo\Openpay\Http\CurlHttpClient;
 use Nowo\Openpay\Http\HttpClient;
 use Psr\Log\LoggerInterface;
@@ -95,7 +97,7 @@ final readonly class Client
             $encoded = json_encode($payload, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES);
             // @codeCoverageIgnoreStart
             if (false === $encoded) {
-                throw new OpenpayException('Unable to encode Openpay JSON payload.');
+                throw new OpenpayInvalidRequestException('Unable to encode Openpay JSON payload.');
             }
             // @codeCoverageIgnoreEnd
             $body = $encoded;
@@ -134,7 +136,7 @@ final readonly class Client
 
         $decoded = json_decode($response->body, true);
         if (!\is_array($decoded)) {
-            throw new OpenpayException('Openpay API returned invalid JSON.');
+            throw new OpenpayInvalidResponseException('Openpay API returned invalid JSON.');
         }
 
         /* @var array<string, mixed> $decoded */

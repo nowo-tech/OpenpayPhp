@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nowo\Openpay\Http;
 
 use Nowo\Openpay\Exception\OpenpayException;
+use Nowo\Openpay\Exception\OpenpayTransportException;
 
 /**
  * cURL transport with connect/request timeouts (REQ-RUNTIME-001).
@@ -30,7 +31,7 @@ final readonly class CurlHttpClient implements HttpClient
         $ch = curl_init($url);
         // @codeCoverageIgnoreStart
         if (false === $ch) {
-            throw new OpenpayException('Unable to initialize cURL.');
+            throw new OpenpayTransportException('Unable to initialize cURL.');
         }
         // @codeCoverageIgnoreEnd
 
@@ -38,7 +39,7 @@ final readonly class CurlHttpClient implements HttpClient
         foreach ($headers as $name => $value) {
             // Header injection guard: no CR / LF / NUL in names or values.
             if (1 === preg_match('/[\r\n\0]/', $name.$value)) {
-                throw new OpenpayException('Invalid HTTP header: CR, LF and NUL are not allowed.');
+                throw new OpenpayTransportException('Invalid HTTP header: CR, LF and NUL are not allowed.');
             }
             $headerLines[] = $name.': '.$value;
         }
@@ -65,7 +66,7 @@ final readonly class CurlHttpClient implements HttpClient
 
         $raw = curl_exec($ch);
         if (!\is_string($raw)) {
-            throw new OpenpayException('Openpay HTTP request failed: '.curl_error($ch));
+            throw new OpenpayTransportException('Openpay HTTP request failed: '.curl_error($ch));
         }
 
         $status = curl_getinfo($ch, \CURLINFO_RESPONSE_CODE);
