@@ -39,6 +39,10 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Documentation
+
+- `docs/USAGE.md`: "Using it from a DDD / hexagonal application" (host `PaymentGateway` port, adapter over `ChargesApiInterface`, wiring, tests) for REQ-ARCH-001. Docs only; no code, no release needed on its own.
+
 ## [1.6.1] - 2026-11-13
 
 ### Fixed

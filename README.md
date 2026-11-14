@@ -71,7 +71,7 @@ $customer = $session->run(static fn (Client $client) => $client->customers->crea
 
 - [Installation](docs/INSTALLATION.md)
 - [Configuration](docs/CONFIGURATION.md)
-- [Usage](docs/USAGE.md)
+- [Usage](docs/USAGE.md) (includes [DDD / hexagonal hosts](docs/USAGE.md#using-it-from-a-ddd--hexagonal-application))
 - [Contributing](docs/CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Changelog](docs/CHANGELOG.md)
