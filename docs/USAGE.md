@@ -28,6 +28,7 @@ Nested customer resources: `$client->customerCharges($id)`, `$client->customerCa
 - [Webhooks](#webhooks)
 - [Errors](#errors)
 - [PSR-18 transport](#psr-18-transport)
+- [Using it from a DDD / hexagonal application](#using-it-from-a-ddd--hexagonal-application)
 - [FrankenPHP worker mode](#frankenphp-worker-mode)
 
 ## Webhooks
@@ -96,6 +97,34 @@ $session = new Session($credentials, new Psr18HttpClient($psr18, $psr18, $psr18)
 ```
 
 PSR-18 transport errors are rethrown as `OpenpayException`. See [CONFIGURATION.md](CONFIGURATION.md#psr-18-transport) and [PSR.md](PSR.md).
+
+## Using it from a DDD / hexagonal application
+
+The library has no entities, events or framework types, so both host kinds use it the same way. Standard hosts call
+`Client` directly (`$client->charges->create(...)`). A DDD host keeps the SDK at the edge and exposes its own port.
+
+- Domain: a host-owned `PaymentGateway` port with scalars and host value objects (amount in minor units, a charge id).
+- Adapter (infrastructure): depends on `Nowo\Openpay\Api\ChargesApiInterface` (or on `Client`), builds the Openpay
+  payload from the port call, maps the decoded array back to a host result, and translates `OpenpayApiException` /
+  `OpenpayTransportException` into host exceptions. `responseBody` is untrusted: never render or log it.
+- Wiring: build one `Client` (credentials from the host's secret store, an injected PSR-18 client via `Psr18HttpClient`)
+  in the host container. It keeps no per-request state, so a long-lived worker shares it; use
+  `$client->withPublicIp($ip)` per request for the end-user IP.
+- Tests: fake `ChargesApiInterface` or `HttpClient`; no network.
+
+```php
+final class OpenpayPaymentGateway implements PaymentGateway
+{
+    public function __construct(private ChargesApiInterface $charges) {}
+
+    public function charge(ChargeRequest $r): ChargeId
+    {
+        $data = $this->charges->create(['method' => 'card', 'source_id' => $r->tokenId, 'amount' => $r->amountMinor / 100, 'currency' => $r->currency, 'description' => $r->description]);
+
+        return new ChargeId((string) $data['id']);
+    }
+}
+```
 
 ## FrankenPHP worker mode
 
