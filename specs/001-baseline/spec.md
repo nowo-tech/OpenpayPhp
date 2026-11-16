@@ -48,6 +48,7 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 - **FR-API-001**: `Client` exposes `charges`, `customers`, `cards`, `tokens`, `webhooks` and customer-scoped `customerCharges()` / `customerCards()`, and builds `{apiRoot}/{path}` requests with JSON bodies.
 - **FR-API-002**: `ResourceApi` provides `create` / `add`, `get`, `getList`, `update`, `delete`, `refund` and `nested()` relative to the merchant root; ids must match `^[A-Za-z0-9_-]{1,64}$` and child resources `^[a-z_]+$`; payload parameters are `#[\SensitiveParameter]`.
 - **FR-API-003**: `Version::VERSION` identifies the library release.
+- **FR-API-004**: `ChargesApiInterface` lists the charge operations a service needs (`ResourceApi` implements it), so callers type-hint the interface and fake it in tests (REQ-ARCH-001 rule 1).
 
 ### HTTP transport (`FR-HTTP-*`)
 
@@ -59,6 +60,7 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 
 - **FR-ERR-001**: Transport and encoding failures raise `OpenpayException`.
 - **FR-ERR-002**: HTTP status ≥ 400 raises `OpenpayApiException` with status, error code, category, description, request id and the raw body (capped at 64 KiB, untrusted); the message is built from the sanitized structured fields only.
+- **FR-ERR-003**: Typed subclasses of `OpenpayException` (existing `catch (OpenpayException)` blocks keep working): `OpenpayConfigurationException` (invalid credentials / end-user IP), `OpenpayInvalidRequestException` (rejected locally before sending: bad id, resource name, operation, unencodable payload), `OpenpayInvalidResponseException` (non-JSON body), `OpenpayTransportException` (cURL / PSR-18 failure, timeout, invalid header).
 
 ### Runtime (`FR-RUN-*`)
 
@@ -72,7 +74,7 @@ As an integrator, I manage a customer's cards and charges and refund a charge.
 
 ## Success criteria (`SC-*`)
 
-- **SC-001**: **11/11** files tracked under `src/` are mapped in [`code-inventory.md`](code-inventory.md) (audit: `git ls-files src | wc -l`).
+- **SC-001**: **17/17** files tracked under `src/` are mapped in [`code-inventory.md`](code-inventory.md) (audit: `git ls-files src | wc -l`).
 - **SC-002**: PHPStan level 8 + FrankenPHP worker-strict pass; PHPUnit line coverage ≥ 99% (currently 100%, 117/117).
 - **SC-003**: No static merchant credentials anywhere in `src/` (worker audit verdict **Viable** for scenario B).
 - **SC-004**: `make release-check` passes, including `check-no-cursor-coauthor`.

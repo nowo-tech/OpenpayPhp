@@ -1,8 +1,8 @@
-# Code inventory — OpenpayPhp 1.1.4
+# Code inventory — OpenpayPhp 1.6.1
 
 **Spec**: [`spec.md`](spec.md)  
-**Last audited**: 2026-10-27  
-**Production units**: 12 (every file tracked under `src/`; audit: `git ls-files src | wc -l`)
+**Last audited**: 2026-11-16  
+**Production units**: 17 (every file tracked under `src/`; audit: `git ls-files src | wc -l`)
 
 Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUDIT.md).
 
@@ -20,6 +20,7 @@ Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUD
 | --- | --- | --- |
 | `src/Client.php` | Client and resources | FR-API-001, FR-RUN-001 |
 | `src/Api/ResourceApi.php` | Client and resources | FR-API-002 |
+| `src/Api/ChargesApiInterface.php` | Client and resources | FR-API-004 |
 | `src/Version.php` | Client and resources | FR-API-003 |
 
 ## HTTP transport
@@ -37,13 +38,17 @@ Worker audit: [docs/FRANKENPHP-WORKER-AUDIT.md](../../docs/FRANKENPHP-WORKER-AUD
 | --- | --- | --- |
 | `src/Exception/OpenpayException.php` | Errors | FR-ERR-001 |
 | `src/Exception/OpenpayApiException.php` | Errors | FR-ERR-002 |
+| `src/Exception/OpenpayConfigurationException.php` | Errors | FR-ERR-003 |
+| `src/Exception/OpenpayInvalidRequestException.php` | Errors | FR-ERR-003 |
+| `src/Exception/OpenpayInvalidResponseException.php` | Errors | FR-ERR-003 |
+| `src/Exception/OpenpayTransportException.php` | Errors | FR-ERR-001, FR-ERR-003 |
 
 ## Coverage summary
 
 | Category | Files | Mapped |
 | --- | ---: | ---: |
 | Credentials and session | 3 | 3 |
-| Client and resources | 3 | 3 |
+| Client and resources | 4 | 4 |
 | HTTP transport | 4 | 4 |
-| Errors | 2 | 2 |
-| **Total production files (`git ls-files src`)** | **12** | **12** |
+| Errors | 6 | 6 |
+| **Total production files (`git ls-files src`)** | **17** | **17** |
