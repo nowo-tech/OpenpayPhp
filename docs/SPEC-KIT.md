@@ -206,7 +206,7 @@ git ls-files src | wc -l
 
 The **Total production sources** row in `code-inventory.md` must match this count.
 
-In **OpenpayPhp**, the baseline inventory covers **11/11** files — see [`specs/001-baseline/code-inventory.md`](../specs/001-baseline/code-inventory.md).
+In **OpenpayPhp**, the baseline inventory covers **17/17** files — see [`specs/001-baseline/code-inventory.md`](../specs/001-baseline/code-inventory.md).
 
 ---
 

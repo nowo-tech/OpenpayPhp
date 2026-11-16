@@ -27,6 +27,7 @@ Nested customer resources: `$client->customerCharges($id)`, `$client->customerCa
 
 - [Webhooks](#webhooks)
 - [Errors](#errors)
+- [Charges interface](#charges-interface)
 - [PSR-18 transport](#psr-18-transport)
 - [Using it from a DDD / hexagonal application](#using-it-from-a-ddd--hexagonal-application)
 - [FrankenPHP worker mode](#frankenphp-worker-mode)

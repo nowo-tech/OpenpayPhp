@@ -41,6 +41,7 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ### Documentation
 
+- REQ compliance sweep 2026-11-16: Spec Kit baseline maps `ChargesApiInterface` and the typed exceptions of 1.4-1.6 (FR-API-004, FR-ERR-003), inventory 17/17 (REQ-SPECKIT-001/003); USAGE table of contents lists "Charges interface" (REQ-DOCS-005).
 - `docs/USAGE.md`: "Using it from a DDD / hexagonal application" (host `PaymentGateway` port, adapter over `ChargesApiInterface`, wiring, tests) for REQ-ARCH-001. Docs only; no code, no release needed on its own.
 
 ## [1.6.1] - 2026-11-13
