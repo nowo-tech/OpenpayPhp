@@ -36,6 +36,8 @@ make test
 
 Without Docker: PHP 8.3+, Composer, `composer install`, `composer test`.
 
+Demo e2e (REQ-DEMO-013): `make -C demo/symfony8 test-e2e`; refresh the README screenshots with `make -C demo/symfony8 demo-screenshots`.
+
 Install git hooks with `make setup-hooks` before committing. Run
 `make check-no-cursor-coauthor` before every push. If CI `git-hygiene`
 fails on historical trailers, run `make strip-cursor-coauthor-from-history`

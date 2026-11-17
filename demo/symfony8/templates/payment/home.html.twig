@@ -2,18 +2,30 @@
 
 {% block title %}OpenpayPhp demo{% endblock %}
 
+{% block nowo_ui_page_header %}
+    <div class="nowo-ui-page-header">
+        <h1 class="nowo-ui-page-header__title">OpenpayPhp — Session demo</h1>
+    </div>
+{% endblock %}
+
 {% block body %}
-  <main style="max-width:40rem;margin:2rem auto;font-family:system-ui,sans-serif">
-    <h1>OpenpayPhp — Session demo</h1>
-    <p>Uses <code>Nowo\Openpay\Session</code> per request (FrankenPHP worker-safe). {% if usingMock %}No keys configured — responses are <strong>mocked</strong>.{% else %}Calling Openpay sandbox/live with your keys.{% endif %}</p>
-    {# REQ-TWIG-005: Symfony Form Type (App\Form\CustomerType) — never hand-written HTML form controls in demo Twig. #}
-    {{ form_start(form) }}
-      {% for child in form %}
-        {% if not child.rendered %}
-          {{ form_row(child) }}
-        {% endif %}
-      {% endfor %}
-      <button type="submit">Create customer</button>
-    {{ form_end(form) }}
-  </main>
+    <p class="nowo-ui-muted">Uses <code class="nowo-ui-code">Nowo\Openpay\Session</code> per request (FrankenPHP worker-safe).</p>
+    {% if usingMock %}
+        <div class="nowo-ui-flash nowo-ui-flash--info" role="status" data-testid="demo-mock-notice">No keys configured — responses are <strong>mocked</strong>.</div>
+    {% else %}
+        <div class="nowo-ui-flash nowo-ui-flash--warning" role="status">Calling Openpay sandbox/live with your keys.</div>
+    {% endif %}
+    <section class="nowo-ui-card" data-testid="demo-customer-form">
+        <div class="nowo-ui-card__header"><h2 class="nowo-ui-card__title">Create customer</h2></div>
+        <div class="nowo-ui-card__body">
+            {# REQ-TWIG-005: Symfony Form Type (App\Form\CustomerType, a FormKit form) — never hand-written HTML form controls in demo Twig. #}
+            {{ form_start(form, {attr: {class: 'nowo-ui-form'}}) }}
+                {% for child in form %}
+                    {% if not child.rendered %}
+                        {{ form_row(child) }}
+                    {% endif %}
+                {% endfor %}
+            {{ form_end(form) }}
+        </div>
+    </section>
 {% endblock %}
