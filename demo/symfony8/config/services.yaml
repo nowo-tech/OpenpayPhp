@@ -6,3 +6,7 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    # REQ-DEMO-015: FormKit forms are services (autoconfigure tags them and FormKit injects its option merger).
+    App\Form\:
+        resource: '../src/Form/'

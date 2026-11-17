@@ -39,6 +39,12 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Demo
+
+- The demo is built on UiKit and FormKit (REQ-DEMO-014 / REQ-DEMO-015): `templates/base.html.twig` is UiKit's admin layout with its default theme and masthead instead of the inline-styled shell, `App\Form\CustomerType` is a FormKit form (`#[FormKitConfig('demo')]`, UiKit form theme), and the pages use UiKit cards, flashes and buttons. The demo requires `nowo-tech/ui-kit-bundle` `^2.53` and `nowo-tech/form-kit-bundle` `^2.23`.
+- REQ-DEMO-013: `demo/symfony8/e2e/` (Playwright: shell, mocked customer creation, validation error), `make test-e2e` / `make demo-screenshots` in the demo Makefile and two WebP screenshots in the README. No SDK change.
+- The demo's mock credentials use the merchant id `demomerchant`: `Credentials` has refused ids with other characters than letters and digits since the validation was added, so the keyless demo answered a 500 ("Invalid Openpay merchant id") on customer creation. Demo code only.
+
 ### Documentation
 
 - REQ compliance sweep 2026-11-16: Spec Kit baseline maps `ChargesApiInterface` and the typed exceptions of 1.4-1.6 (FR-API-004, FR-ERR-003), inventory 17/17 (REQ-SPECKIT-001/003); USAGE table of contents lists "Charges interface" (REQ-DOCS-005).

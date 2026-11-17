@@ -32,7 +32,7 @@ final class PaymentController extends AbstractController
         // New Credentials per call: publicIp must not live in a shared service under FrankenPHP worker.
         $hasKeys = '' !== $merchantId && '' !== $privateKey;
         $credentials = new Credentials(
-            $hasKeys ? $merchantId : 'demo_merchant',
+            $hasKeys ? $merchantId : 'demomerchant',
             $hasKeys ? $privateKey : 'sk_demo',
             $country,
             $sandbox,

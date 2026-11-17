@@ -2,10 +2,17 @@
 
 {% block title %}{{ title }}{% endblock %}
 
+{% block nowo_ui_page_header %}
+    <div class="nowo-ui-page-header">
+        <h1 class="nowo-ui-page-header__title" data-testid="demo-result-title">{{ title }}</h1>
+    </div>
+{% endblock %}
+
 {% block body %}
-  <main style="max-width:40rem;margin:2rem auto;font-family:system-ui,sans-serif">
-    <h1>{{ title }}</h1>
-    <pre style="background:#f4f4f5;padding:1rem;overflow:auto">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
-    <p><a href="{{ path('home') }}">Back</a></p>
-  </main>
+    <section class="nowo-ui-card">
+        <div class="nowo-ui-card__body">
+            <pre class="nowo-ui-code" data-testid="demo-result-payload">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+            <a class="nowo-ui-btn nowo-ui-btn--outline" href="{{ path('home') }}">Back</a>
+        </div>
+    </section>
 {% endblock %}

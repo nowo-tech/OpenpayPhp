@@ -12,6 +12,19 @@ Independent implementation from public docs — **not** a redistribution of `ope
 
 This bundle is **FrankenPHP worker mode friendly**.
 
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/images/demo/overview.webp" alt="Openpay demo: customer form on the mocked session" />
+      <br /><sub>Create a customer through <code>Session</code> (mocked without keys)</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/images/demo/customer-created.webp" alt="Openpay demo: the created customer payload" />
+      <br /><sub>The customer payload returned by the SDK</sub>
+    </td>
+  </tr>
+</table>
+
 ## Table of contents
 
 - [Features](#features)
