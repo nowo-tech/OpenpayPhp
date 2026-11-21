@@ -3,16 +3,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block nowo_ui_page_header %}
-    <div class="nowo-ui-page-header">
-        <h1 class="nowo-ui-page-header__title" data-testid="demo-result-title">{{ title }}</h1>
-    </div>
+    {% set _toolbar %}<a class="nowo-ui-btn nowo-ui-btn--outline" href="{{ path('home') }}">Back</a>{% endset %}
+    {{ include(nowo_ui_partial('page_header'), {
+        title: title,
+        toolbar: _toolbar|trim,
+    }) }}
 {% endblock %}
 
 {% block body %}
-    <section class="nowo-ui-card">
-        <div class="nowo-ui-card__body">
-            <pre class="nowo-ui-code" data-testid="demo-result-payload">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
-            <a class="nowo-ui-btn nowo-ui-btn--outline" href="{{ path('home') }}">Back</a>
-        </div>
-    </section>
+    {% embed '@NowoUiKit/demo_platform/_section.html.twig' with {title: 'Response', kind: 'detail', testid: 'demo-result'} %}
+        {% block section_body %}
+            <pre class="nowo-ui-code-block" data-testid="demo-result-payload">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

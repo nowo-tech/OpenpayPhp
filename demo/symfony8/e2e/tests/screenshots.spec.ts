@@ -4,8 +4,8 @@ import { resolve } from 'node:path';
 import { frameShot } from './frame';
 
 /**
- * REQ-DEMO-013 — full demo frame (UiKit masthead + the Openpay customer flow + WebProfiler toolbar), captured as a
- * padded union clip with a tall viewport (see frame.ts).
+ * REQ-DEMO-013 — full demo frame (demo platform shell + the Openpay customer flow, no WebProfiler toolbar), captured with a
+ * tall viewport (see frame.ts).
  */
 const outDir = process.env.SCREENSHOT_DIR
   ? resolve(process.env.SCREENSHOT_DIR)
@@ -26,6 +26,6 @@ test('overview — customer form on the mocked session', async ({ page }) => {
 test('result — mocked Openpay customer', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Create customer' }).click();
-  await expect(page.locator('[data-testid="demo-result-title"]')).toHaveText('Customer created');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Customer created');
   await frameShot(page, resolve(outDir, 'customer-created.png'));
 });

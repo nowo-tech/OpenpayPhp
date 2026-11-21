@@ -39,6 +39,10 @@ Consumers that still call `Openpay\Data\Openpay` / `OpenpayApi::createRoot()` ne
 
 ## [Unreleased]
 
+### Changed
+
+- Demo: runs in UiKit's demo platform shell (`nowo-tech/ui-kit-bundle` ^2.60); the demo's own header is gone, the pages use the shell page headers and section cards, and the mock notice is a shell flash. The README screenshot spec no longer shows the Symfony toolbar. Demo only, no bundle change.
+
 ### Demo
 
 - The demo is built on UiKit and FormKit (REQ-DEMO-014 / REQ-DEMO-015): `templates/base.html.twig` is UiKit's admin layout with its default theme and masthead instead of the inline-styled shell, `App\Form\CustomerType` is a FormKit form (`#[FormKitConfig('demo')]`, UiKit form theme), and the pages use UiKit cards, flashes and buttons. The demo requires `nowo-tech/ui-kit-bundle` `^2.53` and `nowo-tech/form-kit-bundle` `^2.23`.
