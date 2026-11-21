@@ -13,7 +13,7 @@
 {% block body %}
     {% embed '@NowoUiKit/demo_platform/_section.html.twig' with {title: 'Response', kind: 'detail', testid: 'demo-result'} %}
         {% block section_body %}
-            <pre class="nowo-ui-code-block" data-testid="demo-result-payload">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+            <pre class="nowo-ui-code-block" tabindex="0" data-testid="demo-result-payload">{{ payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
         {% endblock %}
     {% endembed %}
 {% endblock %}

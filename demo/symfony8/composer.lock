@@ -266,7 +266,7 @@
             "dist": {
                 "type": "path",
                 "url": "/var/openpay-php",
-                "reference": "c96eb6ffd0c8c985138d447f2f299de3a2be6c12"
+                "reference": "2c79aef1a288ea445cc19fb61eb087d37a0a4047"
             },
             "require": {
                 "ext-curl": "*",
