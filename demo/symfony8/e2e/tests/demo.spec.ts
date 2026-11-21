@@ -8,8 +8,8 @@ test.describe('OpenpayPhp demo', () => {
   test('home renders the UiKit shell, the mock notice and the customer form', async ({ page }) => {
     const response = await page.goto('/');
     expect(response?.ok()).toBeTruthy();
-    await expect(page.locator('[data-testid="demo-masthead"]')).toBeVisible();
-    await expect(page.locator('[data-testid="demo-mock-notice"]')).toContainText('mocked');
+    await expect(page.getByTestId('demo-platform')).toBeVisible();
+    await expect(page.locator('.nowo-ui-flashes')).toContainText('mocked');
     const form = page.locator('[data-testid="demo-customer-form"]');
     await expect(form.getByLabel('Name')).toHaveValue('Demo User');
     await expect(form.getByLabel('Email')).toHaveValue('demo@example.test');
@@ -21,7 +21,7 @@ test.describe('OpenpayPhp demo', () => {
     await form.getByLabel('Name').fill('Ada Lovelace');
     await form.getByLabel('Email').fill('ada@example.test');
     await page.getByRole('button', { name: 'Create customer' }).click();
-    await expect(page.locator('[data-testid="demo-result-title"]')).toHaveText('Customer created');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Customer created');
     const payload = JSON.parse((await page.locator('[data-testid="demo-result-payload"]').textContent()) ?? '{}');
     expect(payload.mock).toBe(true);
     expect(payload.id).toMatch(/^cus_demo_/);

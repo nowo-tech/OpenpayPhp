@@ -127,9 +127,13 @@ final class PaymentController extends AbstractController
     private function renderHome(FormInterface $form, ?Response $response = null): Response
     {
         $usingMock = ($_ENV['OPENPAY_MERCHANT_ID'] ?? '') === '' || ($_ENV['OPENPAY_PRIVATE_KEY'] ?? '') === '';
+        if ($usingMock) {
+            $this->addFlash('info', 'No keys configured — responses are mocked.');
+        } else {
+            $this->addFlash('warning', 'Calling Openpay sandbox/live with your keys.');
+        }
 
         return $this->render('payment/home.html.twig', [
-            'usingMock' => $usingMock,
             'form' => $form,
         ], $response);
     }
